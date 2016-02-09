@@ -1,0 +1,30 @@
+{
+  "name": "training-functions-stub",
+  "version": "0.1.1-alpha",
+  "description": "Training on JavaScript functions using stubs",
+  "main": "",
+  "directories": {},
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ArnaudBuchholz/training-functions-stub.git"
+  },
+  "author": "Arnaud Buchholz <arnaud.buchholz@free.fr> (http://gpf-js.blogspot.com/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ArnaudBuchholz/training-functions-stub/issues"
+  },
+  "homepage": "http://gpf-js.blogspot.com/",
+  "devDependencies": {
+    "eslint": "^1.6.0",
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-eslint": "^17.2.0",
+    "grunt-mocha-test": "^0.12.7",
+    "jquery": "^2.1.4",
+    "load-grunt-config": "^0.19.1",
+    "load-grunt-tasks": "^3.3.0",
+    "mocha": "^2.2.5",
+    "time-grunt": "^1.2.2"
+  }
+}
