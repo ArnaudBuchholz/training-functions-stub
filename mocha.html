@@ -1,0 +1,29 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Functions stub</title>
+        <link rel="stylesheet" href="node_modules/mocha/mocha.css" />
+        <script src="node_modules/jquery/dist/jquery.js"></script>
+        <script src="node_modules/mocha/mocha.js"></script>
+        <script>
+            mocha.setup("bdd");
+            function assert(condition) {
+                if (!condition) {
+                    throw "ASSERTION failed";
+                }
+            }
+            function loaded () {
+                mocha.checkLeaks();
+                mocha.globals([
+                    "jQuery"
+                ]);
+                mocha.run();
+            }
+        </script>
+        <script src="setup.js"></script>
+    </head>
+    <body onload="loaded()">
+        <h1>Mocha</h1>
+        <div id="mocha"></div>
+    </body>
+</html>
