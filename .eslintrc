@@ -190,13 +190,11 @@
         "no-plusplus":                  0
     },
     "globals": {
-        "chrome":                       false,
-        "console":                      true,
-        "setTimeout":                   true,
-        "um":                           false
+        "assert":                       false
     },
     "env": {
-        "browser": true
+        "browser": true,
+        "mocha": true
     },
     "extends": "eslint:recommended"
 }
