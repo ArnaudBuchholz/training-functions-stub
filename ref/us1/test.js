@@ -9,11 +9,11 @@ describe("sinon", function () {
         });
 
         it("accepts no parameter", function () {
-            var result = sinon.spy();
+            sinon.spy();
         });
 
         it("accepts a function parameter", function () {
-            var result = sinon.spy(function () {});
+            sinon.spy(function () {});
         });
 
         [

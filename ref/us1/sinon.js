@@ -1,7 +1,7 @@
 (function () {
     "use strict";
 
-    function _nop() {}
+    function _nop () {}
 
     function _spy (functionToStub) {
         if (undefined === functionToStub) {
