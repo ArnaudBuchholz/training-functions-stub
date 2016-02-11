@@ -1,8 +1,0 @@
-{
-    "rules": {
-        "max-nested-callbacks": [2, 10]
-    },
-    "globals": {
-        "sinon": true
-    }
-}
