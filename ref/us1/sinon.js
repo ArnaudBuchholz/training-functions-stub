@@ -1,14 +1,21 @@
 (function () {
     "use strict";
 
-    function _stub (functionToStub) {
+    function _nop() {}
+
+    function _spy (functionToStub) {
+        if (undefined === functionToStub) {
+            functionToStub = _nop;
+        } else if ("function" !== typeof functionToStub) {
+            throw Error("Only function can be spied");
+        }
         return functionToStub;
     }
 
     // revealing pattern
     window.sinon = {
 
-        stub: _stub
+        spy: _spy
 
     };
 
