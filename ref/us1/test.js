@@ -1,39 +1,63 @@
 describe("sinon", function () {
     "use strict";
 
-    describe("stub", function () {
+    describe("US1", function () {
 
-        // US1
+        it("is accessible through sinon.spy", function () {
+            assert("object" === typeof sinon);
+            assert("function" === typeof sinon.spy);
+        });
 
-        describe("US1 - As a developer, I want to replace a function with a function that behaves the same way in order to monitor how it is used", function () {
+        it("accepts no parameter", function () {
+            var result = sinon.spy();
+        });
 
-            it("returns a function", function () {
-                var result = sinon.stub(function () {
-                });
-                assert("function" === typeof result);
-            });
+        it("accepts a function parameter", function () {
+            var result = sinon.spy(function () {});
+        });
 
-            it("always returns a function", function () {
-                var result = sinon.stub();
-                assert("function" === typeof result);
-            });
+        [
+            true,
+            42,
+            "string"
 
-            it("returns a function that behaves the same way", function () {
-                function test () {
-                    return 1;
+        ].forEach(function (value) {
+            it("rejects any other parameter - " + typeof value, function () {
+                var exceptionCaught;
+                try {
+                    sinon.spy(value);
+                } catch (e) {
+                    exceptionCaught = e;
                 }
-                var stubbedTest = sinon.stub(test);
-                assert(stubbedTest() === test());
+                assert(undefined !== exceptionCaught);
             });
 
-            it("returns a function that behaves the same way - parameters passing", function () {
-                function increment (value) {
-                    return value + 1;
-                }
-                var stubbedIncrement = sinon.stub(increment);
-                assert(stubbedIncrement(1) === increment(1));
-            });
+        });
 
+        it("returns a function", function () {
+            var result = sinon.spy(function () {});
+            assert("function" === typeof result);
+        });
+
+        it("returns a function - no parameter", function () {
+            var result = sinon.spy();
+            assert("function" === typeof result);
+        });
+
+        it("returns a function that behaves like the parameter", function () {
+            function test () {
+                return 1;
+            }
+            var spiedTest = sinon.spy(test);
+            assert(spiedTest() === test());
+        });
+
+        it("returns a function that behaves the same way - parameters passing", function () {
+            function increment (value) {
+                return value + 1;
+            }
+            var spiedIncrement = sinon.spy(increment);
+            assert(spiedIncrement(1) === increment(1));
         });
 
     });
