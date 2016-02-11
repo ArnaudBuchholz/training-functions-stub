@@ -2,6 +2,11 @@
 (function () {
     "use strict";
 
+    var parameters = {
+        ref: "src",
+        sinon: false
+    };
+
     function addScriptTag (src) {
         var script = document.createElement("script");
         script.setAttribute("src", src);
@@ -10,12 +15,11 @@
 
     function include (reference) {
         addScriptTag("ref/" + reference + "/test.js");
-        addScriptTag("ref/" + reference + "/sinon.js");
+        if (!parameters.sinon) {
+            addScriptTag("ref/" + reference + "/sinon.js");
+        }
     }
 
-    var parameters = {
-        ref: "src"
-    };
     window.location.search.split("&").forEach(function (parameter, index) {
         if (0 === index) {
             // search starts with ?
@@ -30,5 +34,8 @@
     });
 
     include(parameters.ref);
+    if (parameters.sinon) {
+        addScriptTag("node_modules/sinon/pkg/sinon.js");
+    }
 
 }());
