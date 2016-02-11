@@ -5,4 +5,8 @@ describe("Test", function () {
         assert(true);
     });
 
+    it("fails properly", function () {
+        assert(false);
+    });
+
 });
