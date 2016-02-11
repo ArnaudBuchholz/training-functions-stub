@@ -1,6 +1,6 @@
 ### User Story 1
 
-As a developer, I want to replace a function with a new one that will allow me to monitor its use
+As a developer, I want to substitute a function with a new one in order to monitor its use
 
 ## Acceptance criteria
 
@@ -11,3 +11,12 @@ As a developer, I want to replace a function with a new one that will allow me t
 * it returns a function
 * it returns a function that behaves like the parameter
 * it returns a function that does nothing when no parameter was specified
+
+## Lesson Objectives
+
+* Build short test cases
+* Factorize repeatable tests (like the "rejects any other parameter")
+* Use the smallest implementation required
+* [IIFE](https://en.wikipedia.org/wiki/Immediately-invoked_function_expression)
+* [The Revealing Module Pattern](https://addyosmani.com/resources/essentialjsdesignpatterns/book/#revealingmodulepatternjavascript)
+* Parameter testing
