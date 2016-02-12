@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Functions stub</title>
+        <link rel="stylesheet" href="node_modules/qunitjs/qunit/qunit.css" />
+        <script src="node_modules/qunitjs/qunit/qunit.js"></script>
+        <script>
+            function describe (name, nested) {
+                QUnit.module(name, nested());
+            }
+            function it (label, callback) {
+                QUnit.test(label, function (assert) {
+                    window.assert = function (booleanCondition, label) {
+                        assert.ok(booleanCondition, label);
+                    };
+                    if (callback.length) {
+                        callback(assert.async());
+                    } else {
+                        callback();
+                    }
+                });
+            }
+        </script>
+        <script src="loader.js"></script>
+    </head>
+    <body>
+        <h1>qUnit</h1>
+        <div id="qunit"></div>
+        <div id="qunit-fixture"></div>
+    </body>
+</html>
