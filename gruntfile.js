@@ -9,16 +9,32 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
 
+        // https://www.npmjs.com/package/grunt-contrib-copy
+        copy: {
+            us1: {
+                expand: true,
+                cwd: "ref/us1/",
+                src: "*.js",
+                dest: "src/"
+            },
+            us2: {
+                expand: true,
+                cwd: "ref/us2/",
+                src: "*.js",
+                dest: "src/"
+            }
+        },
+
+        // https://www.npmjs.com/package/grunt-eslint
         eslint: {
             target: [
-                "grunt/**/*.js",
-                "src/**/*.js",
-                "test/**/*.js"
+                "src/*.js"
             ]
         },
 
+        // https://www.npmjs.com/package/grunt-mocha-test
         mochaTest: {
-            source: {
+            test: {
                 options: {
                     reporter: "spec",
                     quiet: false,
@@ -26,10 +42,10 @@ module.exports = function (grunt) {
                         function () {
                             global.assert = require("assert");
                         },
-                        "test/host/node.js"
+                        "node.js"
                     ]
                 },
-                src: "test/*.js"
+                src: "src/test.js"
             }
         }
 
@@ -37,6 +53,7 @@ module.exports = function (grunt) {
 
     // Load the packages that adds features to grunt
     [
+        "grunt-contrib-copy",
         "grunt-eslint",
         "grunt-mocha-test"
     ].forEach(function (packageName) {
