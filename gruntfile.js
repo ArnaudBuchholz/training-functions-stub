@@ -27,6 +27,11 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
+            options: {
+                quiet: true,
+                format: "html",
+                outputFile: "tmp/eslint.html"
+            },
             target: [
                 "src/*.js"
             ]
@@ -48,16 +53,41 @@ module.exports = function (grunt) {
                 options: {
                     reporter: "html-cov",
                     quiet: true,
-                    captureFile: "src/coverage.html"
+                    captureFile: "tmp/coverage.html"
+                },
+                src: "src/test.js"
+            },
+            coverageJSON: {
+                options: {
+                    reporter: "json-cov",
+                    quiet: true,
+                    captureFile: "tmp/coverage.json"
                 },
                 src: "src/test.js"
             }
         },
 
         // https://www.npmjs.com/package/grunt-serve
-        serve: {
-            options: {
-                port: 9000
+        connect: {
+            server: {
+                options: {
+                    livereload: false,
+                    port: 9000
+                }
+            }
+        },
+
+        // https://www.npmjs.com/package/grunt-contrib-watch
+        watch: {
+            scripts: {
+                files: ["src/*.js"],
+                tasks: [
+                    "eslint",
+                    "mochaTest"
+                ],
+                options: {
+                    spawn: true
+                }
             }
         }
 
@@ -65,18 +95,19 @@ module.exports = function (grunt) {
 
     // Load the packages that adds features to grunt
     [
+        "grunt-contrib-connect",
         "grunt-contrib-copy",
+        "grunt-contrib-watch",
         "grunt-eslint",
-        "grunt-mocha-test",
-        "grunt-serve"
+        "grunt-mocha-test"
     ].forEach(function (packageName) {
         grunt.loadNpmTasks(packageName);
     });
 
     // Default task
     grunt.registerTask("default", [
-        "eslint",
-        "mochaTest"
+        "connect:server",
+        "watch"
     ]);
 
 };
