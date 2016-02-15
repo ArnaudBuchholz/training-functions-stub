@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Functions stub</title>
+        <link rel="stylesheet" href="index.css" />
+        <script>
+
+function onResize() {
+    var iframe = document.querySelector("iframe"),
+        boundingRect = iframe.getBoundingClientRect();
+    iframe.setAttribute("style", "height: " + (window.innerHeight - boundingRect.top - 10) + "px");
+}
+
+function onLoad() {
+    document.getElementById("mocha").addEventListener("click", function () {
+        document.querySelector("iframe").setAttribute("src", "mocha.html");
+    });
+    document.getElementById("qunit").addEventListener("click", function () {
+        document.querySelector("iframe").setAttribute("src", "qunit.html");
+    });
+    onResize();
+}
+
+        </script>
+    </head>
+    <body onload="onLoad()" onresize="onResize()">
+        <div id="title">
+            <button id="mocha">Mocha</button>
+            <button id="qunit">qUnit</button>
+        </div>
+        <iframe src="mocha.html" width="100%" scrolling="auto"></iframe>
+    </body>
+</html>
