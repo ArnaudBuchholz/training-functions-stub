@@ -29,8 +29,8 @@ module.exports = function (grunt) {
         eslint: {
             options: {
                 quiet: true,
-                format: "html",
-                outputFile: "tmp/eslint.html"
+                format: "json",
+                outputFile: "tmp/eslint.json"
             },
             target: [
                 "src/*.js"
@@ -41,8 +41,9 @@ module.exports = function (grunt) {
         mochaTest: {
             test: {
                 options: {
-                    reporter: "dot",
-                    quiet: false,
+                    quiet: true,
+                    reporter: "json",
+                    captureFile: "tmp/mochaTest.json",
                     require: [
                         "node.js"
                     ]
@@ -51,8 +52,8 @@ module.exports = function (grunt) {
             },
             coverage: {
                 options: {
-                    reporter: "html-cov",
                     quiet: true,
+                    reporter: "html-cov",
                     captureFile: "tmp/coverage.html"
                 },
                 src: "src/test.js"
