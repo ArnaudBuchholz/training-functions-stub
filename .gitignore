@@ -12,8 +12,6 @@ node_modules/
 # Temporary folder
 
 tmp/*
-make/tmp/*
-make/build/*
 
 # Editors
 
