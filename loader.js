@@ -14,9 +14,12 @@
     }
 
     function include (reference) {
-        addScriptTag("ref/" + reference + "/test.js");
+        if ("src" !== reference) {
+            reference = "ref/" + reference;
+        }
+        addScriptTag(reference + "/test.js");
         if (!parameters.sinon) {
-            addScriptTag("ref/" + reference + "/sinon.js");
+            addScriptTag(reference + "/sinon.js");
         }
     }
 
