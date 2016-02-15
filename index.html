@@ -4,15 +4,16 @@
         <meta charset="utf-8">
         <title>Functions stub</title>
         <link rel="stylesheet" href="index.css" />
+        <script src="node_modules/jquery/dist/jquery.js"></script>
         <script>
 
-function onResize() {
+function onResize () {
     var iframe = document.querySelector("iframe"),
         boundingRect = iframe.getBoundingClientRect();
     iframe.setAttribute("style", "height: " + (window.innerHeight - boundingRect.top - 10) + "px");
 }
 
-function onLoad() {
+function onLoad () {
     document.getElementById("mocha").addEventListener("click", function () {
         document.querySelector("iframe").setAttribute("src", "mocha.html");
     });
@@ -22,12 +23,32 @@ function onLoad() {
     onResize();
 }
 
+function checkStatistics () {
+    $.ajax("tmp/eslint.json", {
+        dataType: "json",
+        success: function (data) {
+            document.getElementById("eslint").innerHTML = data.length + " messages";
+        }
+    });
+    $.ajax("tmp/coverage.json", {
+        dataType: "json",
+        success: function (data) {
+            document.getElementById("coverage").innerHTML = (Math.floor(1000 * data.hits / data.sloc) / 10) + "%";
+        }
+    });
+
+}
+
+window.setInterval(checkStatistics, 500);
+
         </script>
     </head>
     <body onload="onLoad()" onresize="onResize()">
         <div id="title">
             <button id="mocha">Mocha</button>
             <button id="qunit">qUnit</button>
+            <a href="#">ESLint: </a><span id="eslint"></span>
+            <a href="tmp/coverage.html" target="_blank">Coverage: </a><span id="coverage"></span>
         </div>
         <iframe src="mocha.html" width="100%" scrolling="auto"></iframe>
     </body>
