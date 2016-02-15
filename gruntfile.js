@@ -36,16 +36,28 @@ module.exports = function (grunt) {
         mochaTest: {
             test: {
                 options: {
-                    reporter: "spec",
+                    reporter: "dot",
                     quiet: false,
                     require: [
-                        function () {
-                            global.assert = require("assert");
-                        },
                         "node.js"
                     ]
                 },
                 src: "src/test.js"
+            },
+            coverage: {
+                options: {
+                    reporter: "html-cov",
+                    quiet: true,
+                    captureFile: "src/coverage.html"
+                },
+                src: "src/test.js"
+            }
+        },
+
+        // https://www.npmjs.com/package/grunt-serve
+        serve: {
+            options: {
+                port: 9000
             }
         }
 
@@ -55,7 +67,8 @@ module.exports = function (grunt) {
     [
         "grunt-contrib-copy",
         "grunt-eslint",
-        "grunt-mocha-test"
+        "grunt-mocha-test",
+        "grunt-serve"
     ].forEach(function (packageName) {
         grunt.loadNpmTasks(packageName);
     });
