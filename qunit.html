@@ -6,18 +6,31 @@
         <link rel="stylesheet" href="node_modules/qunitjs/qunit/qunit.css" />
         <script src="node_modules/qunitjs/qunit/qunit.js"></script>
         <script>
-            function describe (name, nested) {
-                QUnit.module(name, nested());
+            function assert(condition) {
+                if (!condition) {
+                    throw "ASSERTION failed";
+                }
             }
+
+            var names = [];
+            function describe (name, nestedContent) {
+                names.push(name)
+                QUnit.module(names.join(" / "));
+                nestedContent();
+                names.pop();
+            }
+
             function it (label, callback) {
                 QUnit.test(label, function (assert) {
-                    window.assert = function (booleanCondition, label) {
-                        assert.ok(booleanCondition, label);
-                    };
                     if (callback.length) {
-                        callback(assert.async());
+                        var done = assert.async();
+                        callback(function () {
+                            assert.ok(true);
+                            done();
+                        });
                     } else {
                         callback();
+                        assert.ok(true);
                     }
                 });
             }
@@ -25,7 +38,6 @@
         <script src="loader.js"></script>
     </head>
     <body>
-        <h1>qUnit</h1>
         <div id="qunit"></div>
         <div id="qunit-fixture"></div>
     </body>
