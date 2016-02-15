@@ -14,7 +14,7 @@
 
             var names = [];
             function describe (name, nestedContent) {
-                names.push(name)
+                names.push(name);
                 QUnit.module(names.join(" / "));
                 nestedContent();
                 names.pop();
