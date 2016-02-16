@@ -72,16 +72,15 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-notify
         notify: {
-            "eslint": {
+            eslint: {
                 options: {
                     title: "Training on functions stub",
                     message: "Verified with ESLint"
                 }
             },
-            mochaTest: {
+            coverage: {
                 options: {
                     title: "Training on functions stub",
-                    message: "Verified unit testing"
                 }
             }
         },
@@ -94,7 +93,8 @@ module.exports = function (grunt) {
                     "eslint",
                     "notify:eslint",
                     "mochaTest",
-                    "notify:mochaTest"
+                    "notifySetCoverage",
+                    "notify:coverage"
                 ],
                 options: {
                     spawn: true
@@ -114,6 +114,17 @@ module.exports = function (grunt) {
         "grunt-notify"
     ].forEach(function (packageName) {
         grunt.loadNpmTasks(packageName);
+    });
+
+    grunt.registerTask("notifySetCoverage", function () {
+        var coverageData = grunt.file.readJSON("tmp/coverage.json"),
+            message = "Tested, coverage: ";
+        if (coverageData.sloc) {
+            message += Math.floor(1000 * coverageData.hits / coverageData.sloc) / 10 + "%";
+        } else {
+            message += "N/A";
+        }
+        grunt.config.set("notify.coverage.options.message", message);
     });
 
     // Default task
