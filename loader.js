@@ -7,19 +7,27 @@
         sinon: false
     };
 
-    function addScriptTag (src) {
-        var script = document.createElement("script");
-        script.setAttribute("src", src);
-        document.querySelector("head").appendChild(script);
+    function addElement (parent, type, attributes) {
+        var element = document.createElement(type);
+        Object.keys(attributes).forEach(function (name) {
+            element.setAttribute(name, attributes[name]);
+        });
+        return parent.appendChild(element);
+    }
+
+    function addScriptElement (src) {
+        addElement(document.querySelector("head"), "script", {
+            src: src
+        });
     }
 
     function include (reference) {
         if ("src" !== reference) {
             reference = "ref/" + reference;
         }
-        addScriptTag(reference + "/test.js");
+        addScriptElement(reference + "/test.js");
         if (!parameters.sinon) {
-            addScriptTag(reference + "/sinon.js");
+            addScriptElement(reference + "/sinon.js");
         }
     }
 
@@ -38,7 +46,13 @@
 
     include(parameters.ref);
     if (parameters.sinon) {
-        addScriptTag("node_modules/sinon/pkg/sinon.js");
+        addScriptElement("node_modules/sinon/pkg/sinon.js");
     }
+
+    window.addEventListener("load", function () {
+        addElement(document.body, "iframe", {
+            src: "loader.html"
+        });
+    });
 
 }());
