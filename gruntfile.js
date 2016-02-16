@@ -9,6 +9,15 @@ module.exports = function (grunt) {
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
 
+        // https://www.npmjs.com/package/grunt-serve
+        connect: {
+            server: {
+                options: {
+                    port: 9000
+                }
+            }
+        },
+
         // https://www.npmjs.com/package/grunt-contrib-copy
         copy: {
             us1: {
@@ -61,11 +70,18 @@ module.exports = function (grunt) {
             }
         },
 
-        // https://www.npmjs.com/package/grunt-serve
-        connect: {
-            server: {
+        // https://www.npmjs.com/package/grunt-notify
+        notify: {
+            "eslint": {
                 options: {
-                    port: 9000
+                    title: "Training on functions stub",
+                    message: "Verified with ESLint"
+                }
+            },
+            mochaTest: {
+                options: {
+                    title: "Training on functions stub",
+                    message: "Verified unit testing"
                 }
             }
         },
@@ -76,7 +92,9 @@ module.exports = function (grunt) {
                 files: ["src/*.js"],
                 tasks: [
                     "eslint",
-                    "mochaTest"
+                    "notify:eslint",
+                    "mochaTest",
+                    "notify:mochaTest"
                 ],
                 options: {
                     spawn: true
