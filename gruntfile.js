@@ -27,11 +27,6 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
-            options: {
-                quiet: true,
-                format: "json",
-                outputFile: "tmp/eslint.json"
-            },
             target: [
                 "src/*.js"
             ]
@@ -41,9 +36,7 @@ module.exports = function (grunt) {
         mochaTest: {
             test: {
                 options: {
-                    quiet: true,
-                    reporter: "json",
-                    captureFile: "tmp/mochaTest.json",
+                    reporter: "spec",
                     require: [
                         "node.js"
                     ]
@@ -72,7 +65,6 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    livereload: false,
                     port: 9000
                 }
             }
@@ -100,7 +92,8 @@ module.exports = function (grunt) {
         "grunt-contrib-copy",
         "grunt-contrib-watch",
         "grunt-eslint",
-        "grunt-mocha-test"
+        "grunt-mocha-test",
+        "grunt-notify"
     ].forEach(function (packageName) {
         grunt.loadNpmTasks(packageName);
     });
