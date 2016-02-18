@@ -52,7 +52,8 @@
     window.addEventListener("load", function () {
         addElement(document.body, "iframe", {
             src: "loader.html",
-            style: "border: 0;"
+            style: "border: 0;",
+            width: "100%"
         });
     });
 
