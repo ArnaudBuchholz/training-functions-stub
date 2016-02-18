@@ -2,7 +2,7 @@
 (function () {
     "use strict";
 
-    var parameters = {
+    var parameters = window.parameters = {
         ref: "src",
         sinon: false
     };
@@ -52,8 +52,20 @@
     window.addEventListener("load", function () {
         addElement(document.body, "iframe", {
             src: "loader.html",
-            style: "border: 0;"
+            style: "border: 0;",
+            width: "100%"
         });
     });
+
+    parameters.reload = function () {
+        var search = [];
+        if (this.sinon) {
+            search.push("sinon=true");
+        }
+        if (this.ref !== "src") {
+            search.push("ref=" + this.ref);
+        }
+        window.location.search = "?" + search.join("&");
+    };
 
 }());
