@@ -10,5 +10,29 @@
         <a href="mocha.html" target="_top">&raquo; Mocha</a>
         <a href="qunit.html" target="_top">&raquo; qUnit</a>
         <a href="tmp/coverage.html" target="_blank">&raquo; Coverage</a>
+        <br/><label><input type="checkbox" id="sinon">Use real sinon library</label>
+        <br><label>Based on <select id="ref">
+            <option value="src">Sources</option>
+            <option value="us1">User Story 1 (solution)</option>
+            <option value="us2">User Story 2 (solution)</option>
+        </select></label>
+        <script>
+var top = window.top;
+[].slice.call(document.querySelectorAll("a"), 0).forEach(function (a) {
+    a.setAttribute("href", a.getAttribute("href") + top.location.search);
+});
+var sinon = document.getElementById("sinon");
+sinon.checked = top.parameters.sinon === "true";
+sinon.addEventListener("change", function () {
+    top.parameters.sinon = sinon.checked;
+    top.parameters.reload();
+});
+var ref = document.getElementById("ref");
+ref.value = top.parameters.ref;
+ref.addEventListener("change", function () {
+    top.parameters.ref = ref.value;
+    top.parameters.reload();
+});
+        </script>
     </body>
 </html>
