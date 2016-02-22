@@ -20,6 +20,12 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-contrib-copy
         copy: {
+            init: {
+                expand: true,
+                cwd: "ref/",
+                src: "*.js",
+                dest: "src/"
+            },
             us1: {
                 expand: true,
                 cwd: "ref/us1/",
