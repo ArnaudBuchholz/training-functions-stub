@@ -1,3 +1,4 @@
+// sinon implementation
 (function () {
     "use strict";
 
@@ -7,12 +8,12 @@
         if (undefined === functionToStub) {
             functionToStub = _nop;
         } else if ("function" !== typeof functionToStub) {
-            throw Error("Only function can be spied");
+            throw Error("Invalid parameter");
         }
-        function result (a) {
+        function result () {
             result.called = true;
             ++result.callCount;
-            return functionToStub(a);
+            return functionToStub.apply(this, arguments); //eslint-disable-line no-invalid-this
         }
         result.callCount = 0;
         result.called = false;
