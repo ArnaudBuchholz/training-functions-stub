@@ -1,3 +1,4 @@
+// sinon implementation
 (function () {
     "use strict";
 
@@ -7,7 +8,7 @@
         if (undefined === functionToStub) {
             functionToStub = _nop;
         } else if ("function" !== typeof functionToStub) {
-            throw Error("Only function can be spied");
+            throw Error("Invalid parameter");
         }
         return functionToStub;
     }
