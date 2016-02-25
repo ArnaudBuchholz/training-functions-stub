@@ -99,3 +99,221 @@
 
 * Show Mocha
 * Explain [eslint error no-invalid-this](http://eslint.org/docs/rules/no-invalid-this)
+
+* Modify _spy with:
+```Javascript
+        function result () {
+            result.called = true;
+            return functionToStub.apply(this, arguments); //eslint-disable-line no-invalid-this
+        }
+```
+
+* Explain that we miss a test case to validate this forwarding
+* Open src\test.js
+* Add inside US1
+```Javascript
+        it("forwards this", function () {
+            var obj = {
+                method: function () {
+                    assert(this === obj);
+                }
+            };
+            obj.method = sinon.spy(obj.method);
+            obj.method();
+        });
+```
+
+# Step 4
+
+* Open src\test.js
+* Add
+```Javascript
+            var COUNT = 10;
+
+            it("was called 10 times - synchronously", function () {
+                var spiedTest = sinon.spy(),
+                    count = COUNT;
+                while (count--) {
+                    spiedTest();
+                }
+                assert(spiedTest.called);
+            });
+```
+
+* Show Mocha
+
+# Step 5
+
+* Open src\test.js
+* Add
+```Javascript
+            it("was called 10 times - asynchronously", function () {
+                var spiedTest = sinon.spy(),
+                    count = COUNT;
+                while (count--) {
+                    window.setTimeout(spiedTest, 10);
+                }
+                assert(spiedTest.called);
+            });
+```
+
+* Show Mocha
+* How do you debug this?
+* Modify the code to stop at the beginning of the test and when the spiedTest is called
+* Modify using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
+  And [done handler](https://mochajs.org/#asynchronous-code)
+```Javascript
+            it("was called 10 times - asynchronously", function (done) {
+                var spiedTest = sinon.spy(),
+                    count = COUNT,
+                    promises = [];
+                while (count--) {
+                    promises.push(new Promise(function (resolve/*, reject*/) {
+                        window.setTimeout(function () {
+                            spiedTest();
+                            resolve();
+                        }, 10);
+                    }));
+                }
+                Promise.all(promises).then(function () {
+                    assert(spiedTest.called);
+                    done();
+                });
+            });
+```
+
+* Show Mocha
+* Explain [eslint error no-loop-func](http://eslint.org/docs/rules/no-loop-func)
+
+* Modify to
+```Javascript
+            it("was called 10 times - asynchronously", function (done) {
+                var spiedTest = sinon.spy(),
+                    count = COUNT,
+                    promises = [];
+                function getPromise () {
+                    return new Promise(function (resolve/*, reject*/) {
+                        setTimeout(function () {
+                            spiedTest();
+                            resolve();
+                        }, 10);
+                    });
+                }
+                while (count--) {
+                    promises.push(getPromise());
+                }
+                Promise.all(promises).then(function () {
+                    try {
+                        assert(spiedTest.called);
+                        done();
+                    } catch (e) {
+                        done(e);
+                    }
+                });
+            });
+```
+
+* Show Mocha
+
+# Step 6
+
+* DRY to handle callCount
+* Open src\test.js
+* Add
+```Javascript
+        // function verify (spiedTest, expectedCallCount)
+        function generateTests (verify) {
+            it("was never called", function () {
+                var spiedTest = sinon.spy();
+                assert(verify(spiedTest, 0));
+            });
+
+            it("was called once", function () {
+                var spiedTest = sinon.spy();
+                spiedTest();
+                assert(verify(spiedTest, 1));
+            });
+
+            var COUNT = 10;
+
+            it("was called 10 times - synchronously", function () {
+                var spiedTest = sinon.spy(),
+                    count = COUNT;
+                while (count--) {
+                    spiedTest();
+                }
+                assert(verify(spiedTest, COUNT));
+            });
+
+            it("was called 10 times - asynchronously", function (done) {
+                var spiedTest = sinon.spy(),
+                    count = COUNT,
+                    promises = [];
+                function getPromise () {
+                    return new Promise(function (resolve/*, reject*/) {
+                        setTimeout(function () {
+                            spiedTest();
+                            resolve();
+                        }, 10);
+                    });
+                }
+                while (count--) {
+                    promises.push(getPromise());
+                }
+                Promise.all(promises).then(function () {
+                    Promise.all(promises).then(function () {
+                        try {
+                            assert(verify(spiedTest, COUNT));
+                            done();
+                        } catch (e) {
+                            done(e);
+                        }
+                    });
+                });
+            });
+        }
+
+        describe("exposes the property \"called\" the indicates if the function was called", function () {
+
+            generateTests(function (spiedTest, expectedCallCount) {
+                return (0 !== expectedCallCount) === spiedTest.called;
+            });
+
+        });
+```
+
+* Show Mocha
+* Explain [eslint error no-extra-parens](http://eslint.org/docs/rules/no-extra-parens)
+* Modify to
+```Javascript
+
+            generateTests(function (spiedTest, expectedCallCount) {
+                return 0 !== expectedCallCount === spiedTest.called;
+            });
+
+        });
+```
+
+* Then add:
+```Javascript
+        describe("exposes the property \"callCount\" that indicates how often the function was called", function () {
+
+            generateTests(function (spiedTest, expectedCallCount) {
+                return expectedCallCount === spiedTest.callCount;
+            });
+
+        });
+```
+
+* Show Mocha
+* Open src\sinon.js
+* Modify
+```Javascript
+        function result () {
+            result.called = true;
+            ++result.callCount;
+            return functionToStub.apply(this, arguments); //eslint-disable-line no-invalid-this
+        }
+        result.called = false;
+        result.callCount = 0;
+```
