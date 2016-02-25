@@ -84,69 +84,84 @@ describe("sinon", function () {
             assert(undefined === spiedTest(1, 2, 3));
         });
 
+        it("forwards this", function () {
+            var obj = {
+                method: function () {
+                    assert(this === obj);
+                }
+            };
+            obj.method = sinon.spy(obj.method);
+            obj.method();
+        });
+
     });
 
     describe("US2", function () {
 
-        function generateTest (checkNumberOfCall) {
-            it("was not called never", function () {
+        // function verify (spiedTest, expectedCallCount)
+        function generateTests (verify) {
+            it("was never called", function () {
                 var spiedTest = sinon.spy();
-                checkNumberOfCall(spiedTest, 0);
+                assert(verify(spiedTest, 0));
             });
 
             it("was called once", function () {
                 var spiedTest = sinon.spy();
                 spiedTest();
-                checkNumberOfCall(spiedTest, 1);
+                assert(verify(spiedTest, 1));
             });
 
+            var COUNT = 10;
+
             it("was called 10 times - synchronously", function () {
-                var spiedTest = sinon.spy();
-                var count = 10;
+                var spiedTest = sinon.spy(),
+                    count = COUNT;
                 while (count--) {
                     spiedTest();
                 }
-                checkNumberOfCall(spiedTest, 10);
+                assert(verify(spiedTest, COUNT));
             });
 
             it("was called 10 times - asynchronously", function (done) {
-                var spiedTest = sinon.spy();
-                var count = 10;
-                var promises = [];
-                while (count--) {
-                    promises.push(new Promise(function (resolve/*, reject*/) { //eslint-disable-line no-loop-func
+                var spiedTest = sinon.spy(),
+                    count = COUNT,
+                    promises = [];
+                function getPromise () {
+                    return new Promise(function (resolve/*, reject*/) {
                         setTimeout(function () {
                             spiedTest();
                             resolve();
-                        }, 0);
-                    }));
+                        }, 10);
+                    });
                 }
-                Promise.all(promises)
-                    .then(function () {
+                while (count--) {
+                    promises.push(getPromise());
+                }
+                Promise.all(promises).then(function () {
+                    Promise.all(promises).then(function () {
                         try {
-                            checkNumberOfCall(spiedTest, 10);
+                            assert(verify(spiedTest, COUNT));
                             done();
                         } catch (e) {
                             done(e);
                         }
                     });
+                });
             });
-
         }
 
-        describe("it exposes the property \"called\" the indicates if the function was called", function () {
+        describe("exposes the property \"called\" the indicates if the function was called", function () {
 
-            generateTest(function (spiedFunc, expectedNumberOfCount) {
-                var expectedCalled = 0 !== expectedNumberOfCount;
-                assert(expectedCalled === spiedFunc.called);
+            generateTests(function (spiedTest, expectedCallCount) {
+                return 0 !== expectedCallCount === spiedTest.called;
             });
 
         });
 
-        describe("it exposes the property \"callCount\" that indicates how often the function was called", function () {
+        describe("exposes the property \"callCount\" that indicates how often the function was called", function () {
 
-            generateTest(function (spiedFunc, expectedNumberOfCount) {
-                assert(expectedNumberOfCount === spiedFunc.callCount);
+            generateTests(function (spiedTest, expectedCallCount) {
+                return expectedCallCount === spiedTest.callCount;
             });
 
         });

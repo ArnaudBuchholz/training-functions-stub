@@ -15,8 +15,8 @@
             ++result.callCount;
             return functionToStub.apply(this, arguments); //eslint-disable-line no-invalid-this
         }
-        result.callCount = 0;
         result.called = false;
+        result.callCount = 0;
         return result;
     }
 
