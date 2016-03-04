@@ -281,6 +281,20 @@ describe("sinon", function () {
         });
 ```
 
+* Alternate version:
+```Javascript
+        it("returns a function that behaves like the parameter - parameters passing", function () {
+            function sum () {
+                return [].slice.call(arguments).reduce(function (a, b) {
+                    return a + b;
+                });
+            }
+            assert(6 === sum(1, 2, 3));
+            var spiedSum = sinon.spy(sum);
+            assert(6 === spiedSum(1, 2, 3));
+        });
+```
+
 # Step 8
 
 * Open src\test.js
