@@ -1,4 +1,4 @@
-### User Story 1
+# User Story 1
 
 As a developer, I want to substitute a function with a new one in order to gather information from its use
 
