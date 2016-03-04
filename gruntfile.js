@@ -5,6 +5,40 @@ module.exports = function (grunt) {
     // This will measure the time spent in each task
     require("time-grunt")(grunt);
 
+    // Check the number of stories
+    var fs = require("fs"),
+        storyCount = 0,
+        copySettings = {
+            init: {
+                expand: true,
+                cwd: "ref/",
+                src: "*.js",
+                dest: "src/"
+            }
+        };
+    (function () {
+        var index = 1,
+            stats;
+        while (true) { //eslint-disable-line no-constant-condition
+            try {
+                stats = fs.statSync("ref/us" + index);
+            } catch (e) {
+                break;
+            }
+            if (!stats.isDirectory()) {
+                break;
+            }
+            ++storyCount;
+            copySettings["us" + index] = {
+                expand: true,
+                cwd: "ref/us" + index + "/",
+                src: "*.js",
+                dest: "src/"
+            };
+            ++index;
+        }
+    }());
+
     // This will configure each task individually
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -19,26 +53,7 @@ module.exports = function (grunt) {
         },
 
         // https://www.npmjs.com/package/grunt-contrib-copy
-        copy: {
-            init: {
-                expand: true,
-                cwd: "ref/",
-                src: "*.js",
-                dest: "src/"
-            },
-            us1: {
-                expand: true,
-                cwd: "ref/us1/",
-                src: "*.js",
-                dest: "src/"
-            },
-            us2: {
-                expand: true,
-                cwd: "ref/us2/",
-                src: "*.js",
-                dest: "src/"
-            }
-        },
+        copy: copySettings,
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
@@ -86,7 +101,7 @@ module.exports = function (grunt) {
             },
             coverage: {
                 options: {
-                    title: "Training on functions stub",
+                    title: "Training on functions stub"
                 }
             }
         },
@@ -122,6 +137,20 @@ module.exports = function (grunt) {
         grunt.loadNpmTasks(packageName);
     });
 
+    grunt.registerTask("md2html", "Converts User Story markdown to HTML", function () {
+        var storyIndex = 0,
+            showdown  = require("showdown"),
+            converter = new showdown.Converter(),
+            mdContent,
+            htmlContent;
+        while (storyIndex < storyCount) {
+            ++storyIndex;
+            mdContent = fs.readFileSync("ref/us" + storyIndex + "/README.md").toString();
+            htmlContent = converter.makeHtml(mdContent);
+            fs.writeFileSync("tmp/us" + storyIndex + ".html", htmlContent);
+        }
+    });
+
     grunt.registerTask("notifySetCoverage", function () {
         var coverageData = grunt.file.readJSON("tmp/coverage.json"),
             message = "Tested, coverage: ";
@@ -135,6 +164,7 @@ module.exports = function (grunt) {
 
     // Default task
     grunt.registerTask("default", [
+        "md2html",
         "connect:server",
         "watch"
     ]);
