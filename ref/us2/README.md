@@ -1,4 +1,4 @@
-### User Story 2
+# User Story 2
 
 As a developer, I want to know how many times a spied function has been called in order to check this information in my tests
 
