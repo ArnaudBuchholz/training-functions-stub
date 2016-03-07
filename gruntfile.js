@@ -146,7 +146,7 @@ module.exports = function (grunt) {
         while (storyIndex < storyCount) {
             ++storyIndex;
             mdContent = fs.readFileSync("ref/us" + storyIndex + "/README.md").toString();
-            htmlContent = converter.makeHtml(mdContent);
+            htmlContent = "<link rel=\"stylesheet\" href=\"../us.css\" />\r\n" + converter.makeHtml(mdContent);
             fs.writeFileSync("tmp/us" + storyIndex + ".html", htmlContent);
         }
     });
