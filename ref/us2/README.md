@@ -10,6 +10,6 @@ As a developer, I want to know how many times a spied function has been called i
 ## Lesson Objectives
 
 * DRY: factorize the two acceptances criteria content
-* Test your test cases (number of calls)
+* Clean test cases
 * [Promises](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise) & Asynchronous synchronisation
 * [Closure](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures)
