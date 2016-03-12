@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<title>training-functions-stub</title>
+		<meta name="description" content="Training on JavaScript functions using stubs">
+		<meta name="author" content="Arnaud Buchholz">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
+		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/css/reveal.css">
+		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/css/theme/sky.css" id="theme">
+		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/lib/css/zenburn.css">
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( "link" );
+			link.rel = "stylesheet";
+			link.type = "text/css";
+			link.href = "http://arnaudbuchholz.github.io/reveal/" + (window.location.search.match(/print-pdf/gi) ? "css/print/pdf.css" : "css/print/paper.css");
+			document.getElementsByTagName("head")[0].appendChild(link);
+		</script>
+		<!--[if lt IE 9]>
+		<script src="http://arnaudbuchholz.github.io/reveal/lib/js/html5shiv.js"></script>
+		<![endif]-->
+	</head>
+	<body>
+		<div class="reveal">
+			<!-- Any section element inside of this container is displayed as a slide -->
+			<div class="slides">
+				<section>
+					<h3>Training on JavaScript functions using stubs</h3>
+					<p>
+						<small>
+                            Based on <a href="http://sinonjs.org/">Sinon.JS</a> spies, stubs and mocks
+                            <br/>
+							Presented by <a href="https://github.com/ArnaudBuchholz">Arnaud Buchholz</a>
+							<br/>
+							Presentation made with <a href="https://github.com/hakimel/reveal.js">Reveal.js</a>
+						</small>
+					</p>
+				</section>
+				<section>
+					<h3>Arnaud Buchholz</h3>
+                    <table>
+                        <tr>
+                            <td>
+                                <img src="http://arnaudbuchholz.github.io/gfx/me40.png">
+                            </td>
+                            <td  style="vertical-align: top;">
+                                <ul>
+                                    <li>In the software industry since 1998</li>
+                                    <li>Former trainer</li>
+                                    <li>Working with JavaScript for 10 years (4 years as a Front-End developper)</li>
+                                    <li>Passionate about JavaScript, curious &amp; experimenting</li>
+                                    <li>French and almost Canadian</li>
+                                </ul>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <a href="https://ca.linkedin.com/in/arnaudbuchholz"><img style="border: 0" src="http://arnaudbuchholz.github.io/gfx/LinkedIn.png"></a>
+                                <a href="https://https://github.com/ArnaudBuchholz"><img style="border: 0" src="http://arnaudbuchholz.github.io/gfx/GitHub.png"></a>
+                            </td>
+                        </tr>
+                    </table>
+				</section>
+				<section>
+                    <section>
+                        <h3>Content and Audience</h3>
+                        <ul>
+                            <li>Discovery of Sinon.JS through custom implementation</li>
+                            <li>Best practices using TDD, linting, coverage and automation</li>
+                            <li>Beginner to intermediate</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Sinon.JS</h3>
+                        Purpose: When doing unit tests, know when your functions are used and how
+                        (Link + Sample of code)
+                    </section>
+                    <section>
+                        <h3>Test Driven Development</h3>
+                        According to <a href="http://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html">uncle Bob</a>, the steps are:
+                        <ul>
+                            <li>You must write a failing test before you write any production code.</li>
+                            <li>You must not write more of a test than is sufficient to fail, or fail to compile.</li>
+                            <li>You must not write more production code than is sufficient to make the currently failing test pass.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Linting</h3>
+                        Purpose: Know your errors before the code is executed
+                        Tool: ESLint
+                    </section>
+                    <section>
+                        <h3>Coverage</h3>
+                        Purpose: How deep is your code tested?
+                        Tool: Blanket.js (also Istanbul)
+                    </section>
+                    <section>
+                        <h3>Automation</h3>
+                        Purpose: As lazy developpers, we don't like doing the same things twice
+                        Tool: Grunt (also Gulp)
+                    </section>
+				</section>
+				<section>
+                    <section>
+                        <h3>User Stories</h3>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            As a developer, I want to substitute a function with a new one in order to gather information from its use
+
+                            * it is accessible through sinon.spy
+                            * it accepts no parameter
+                            * it accepts a function parameter
+                            * it rejects any other parameter
+                            * it returns a function
+                            * it returns a function that behaves like the parameter
+                            * it returns a function that does nothing when no parameter was specified
+                        </script>
+                    </section>
+                    <section data-markdown>
+                        <script type="text/template">
+                            As a developer, I want to know how many times a spied function has been called in order to check this information in my tests
+
+                            * it exposes the property "called" the indicates if the function was called
+                            * it exposes the property "callCount" that indicates how often the function was called
+                        </script>
+                    </section>
+                    <section>
+                        <small>more to come...</small>
+                    </section>
+				</section>
+                <section>
+                    <h3>Your feedback is welcome</h3>
+                    <a href="https://github.com/ArnaudBuchholz/training-functions-stub"><img style="border: 0" src="http://arnaudbuchholz.github.io/gfx/GitHub.png"></a>
+                </section>
+			</div>
+		</div>
+		<script src="http://arnaudbuchholz.github.io/reveal/lib/js/head.min.js"></script>
+		<script src="http://arnaudbuchholz.github.io/reveal/js/reveal.js"></script>
+		<script>
+			Reveal.initialize({
+				controls: true,
+				progress: true,
+				history: true,
+				center: true,
+				transition: "slide", // none/fade/slide/convex/concave/zoom
+				// Optional reveal.js plugins
+				dependencies: [{
+                    src: "http://arnaudbuchholz.github.io/reveal/lib/js/classList.js",
+                    condition: function() {
+                        return !document.body.classList;
+                    }
+                }, {
+                    src: "http://arnaudbuchholz.github.io/reveal/plugin/markdown/marked.js",
+                    condition: function() {
+                        return !!document.querySelector("[data-markdown]");
+                    }
+                }, {
+                    src: "http://arnaudbuchholz.github.io/reveal/plugin/markdown/markdown.js",
+                    condition: function() {
+                        return !!document.querySelector("[data-markdown]");
+                    }
+                }, {
+                    src: "http://arnaudbuchholz.github.io/reveal/plugin/highlight/highlight.js",
+                    async: true,
+                    callback: function() {
+                        hljs.initHighlightingOnLoad();
+                    }
+                }, {
+                    src: "http://arnaudbuchholz.github.io/reveal/plugin/zoom-js/zoom.js",
+                    async: true
+                }, {
+                    src: "http://arnaudbuchholz.github.io/reveal/plugin/notes/notes.js",
+                    async: true
+                }]
+			});
+			// Update links to open in a new window
+			[].slice.call(document.querySelectorAll("a")).forEach(function (a) {
+				a.setAttribute("target", "_blank");
+			});
+		</script>
+	</body>
+</html>
