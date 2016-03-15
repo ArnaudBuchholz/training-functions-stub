@@ -13,11 +13,11 @@
 * Open src\test.js
 * Paste them as following
 ```Javascript
-        describe("exposes the property \"called\" the indicates if the function was called", function () {
+        describe("it exposes the property \"called\" the indicates if the function was called", function () {
 
         });
 
-        describe("exposes the property \"callCount\" that indicates how often the function was called", function () {
+        describe("it exposes the property \"callCount\" that indicates how often the function was called", function () {
         });
 ```
 
@@ -130,7 +130,7 @@
 ```Javascript
             var COUNT = 10;
 
-            it("was called 10 times - synchronously", function () {
+            it("was called " + COUNT + " times - synchronously", function () {
                 var spiedTest = sinon.spy(),
                     count = COUNT;
                 while (count--) {
@@ -147,7 +147,7 @@
 * Open src\test.js
 * Add
 ```Javascript
-            it("was called 10 times - asynchronously", function () {
+            it("was called " + COUNT + " times - asynchronously", function () {
                 var spiedTest = sinon.spy(),
                     count = COUNT;
                 while (count--) {
@@ -163,7 +163,7 @@
 * Modify using [Promise](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise)
   And [done handler](https://mochajs.org/#asynchronous-code)
 ```Javascript
-            it("was called 10 times - asynchronously", function (done) {
+            it("was called " + COUNT + " times - asynchronously", function (done) {
                 var spiedTest = sinon.spy(),
                     count = COUNT,
                     promises = [];
@@ -187,7 +187,7 @@
 
 * Modify to
 ```Javascript
-            it("was called 10 times - asynchronously", function (done) {
+            it("was called " + COUNT + " times - asynchronously", function (done) {
                 var spiedTest = sinon.spy(),
                     count = COUNT,
                     promises = [];
@@ -236,7 +236,7 @@
 
             var COUNT = 10;
 
-            it("was called 10 times - synchronously", function () {
+            it("was called " + COUNT + " times - synchronously", function () {
                 var spiedTest = sinon.spy(),
                     count = COUNT;
                 while (count--) {
@@ -245,7 +245,7 @@
                 assert(verify(spiedTest, COUNT));
             });
 
-            it("was called 10 times - asynchronously", function (done) {
+            it("was called " + COUNT + " times - asynchronously", function (done) {
                 var spiedTest = sinon.spy(),
                     count = COUNT,
                     promises = [];
@@ -273,7 +273,7 @@
             });
         }
 
-        describe("exposes the property \"called\" the indicates if the function was called", function () {
+        describe("it exposes the property \"called\" the indicates if the function was called", function () {
 
             generateTests(function (spiedTest, expectedCallCount) {
                 return (0 !== expectedCallCount) === spiedTest.called;
@@ -296,7 +296,7 @@
 
 * Then add:
 ```Javascript
-        describe("exposes the property \"callCount\" that indicates how often the function was called", function () {
+        describe("it exposes the property \"callCount\" that indicates how often the function was called", function () {
 
             generateTests(function (spiedTest, expectedCallCount) {
                 return expectedCallCount === spiedTest.callCount;
