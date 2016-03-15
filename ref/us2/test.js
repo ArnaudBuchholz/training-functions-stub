@@ -17,7 +17,6 @@ describe("sinon", function () {
     describe("US1", function () {
 
         it("is accessible through sinon.spy", function () {
-            assert("undefined" !== typeof sinon);
             assert("function" === typeof sinon.spy);
         });
 

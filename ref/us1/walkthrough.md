@@ -69,7 +69,6 @@ describe("sinon", function () {
 * Fill the following test
 ```Javascript
         it("is accessible through sinon.spy", function () {
-            assert("undefined" !== typeof sinon);
             assert("function" === typeof sinon.spy);
         });
 ```
