@@ -32,7 +32,8 @@ describe("sinon", function () {
         [
             true,
             42,
-            "Hello World!"
+            "Hello World!",
+            new Date()
         ].forEach(function (value) {
             it("rejects any other parameter - " + typeof value + " (" + value.toString() + ")", function () {
                 var exceptionCaught;
@@ -113,7 +114,7 @@ describe("sinon", function () {
 
             var COUNT = 10;
 
-            it("was called 10 times - synchronously", function () {
+            it("was called " + COUNT + " times - synchronously", function () {
                 var spiedTest = sinon.spy(),
                     count = COUNT;
                 while (count--) {
@@ -122,7 +123,7 @@ describe("sinon", function () {
                 assert(verify(spiedTest, COUNT));
             });
 
-            it("was called 10 times - asynchronously", function (done) {
+            it("was called " + COUNT + " times - asynchronously", function (done) {
                 var spiedTest = sinon.spy(),
                     count = COUNT,
                     promises = [];
@@ -150,7 +151,7 @@ describe("sinon", function () {
             });
         }
 
-        describe("exposes the property \"called\" the indicates if the function was called", function () {
+        describe("it exposes the property \"called\" the indicates if the function was called", function () {
 
             generateTests(function (spiedTest, expectedCallCount) {
                 return 0 !== expectedCallCount === spiedTest.called;
@@ -158,7 +159,7 @@ describe("sinon", function () {
 
         });
 
-        describe("exposes the property \"callCount\" that indicates how often the function was called", function () {
+        describe("it exposes the property \"callCount\" that indicates how often the function was called", function () {
 
             generateTests(function (spiedTest, expectedCallCount) {
                 return expectedCallCount === spiedTest.callCount;
