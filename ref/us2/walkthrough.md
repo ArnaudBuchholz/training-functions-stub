@@ -1,6 +1,18 @@
 # Step 1
 
 * Open src\test.js
+* Put the existing code in a describe
+```Javascript
+describe("sinon.spy", function () {
+    "use strict";
+
+    describe("US1", function () {
+        /*...*/
+    });
+
+});
+```
+
 * Add after the US1
 ```Javascript
     describe("US2", function () {
