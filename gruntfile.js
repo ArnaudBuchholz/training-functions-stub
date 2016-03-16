@@ -114,6 +114,7 @@ module.exports = function (grunt) {
                     "eslint",
                     "notify:eslint",
                     "mochaTest",
+                    "updateCoverage",
                     "notifySetCoverage",
                     "notify:coverage"
                 ],
@@ -149,6 +150,11 @@ module.exports = function (grunt) {
             htmlContent = "<link rel=\"stylesheet\" href=\"../us.css\" />\r\n" + converter.makeHtml(mdContent);
             fs.writeFileSync("tmp/us" + storyIndex + ".html", htmlContent);
         }
+    });
+
+    grunt.registerTask("updateCoverage", "Append fix-coverage to the generated coverage file", function () {
+        fs.writeFileSync("tmp/coverage.html", fs.readFileSync("tmp/coverage.html").toString()
+            + fs.readFileSync("fix-coverage.html").toString());
     });
 
     grunt.registerTask("notifySetCoverage", function () {
