@@ -1,6 +1,8 @@
 describe("Test", function () {
     "use strict";
 
+    it("is pending");
+
     it("was loaded properly", function () {
         assert(true);
     });
