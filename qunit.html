@@ -21,18 +21,22 @@
             }
 
             function it (label, callback) {
-                QUnit.test(label, function (assert) {
-                    if (callback.length) {
-                        var done = assert.async();
-                        callback(function () {
+                if (callback) {
+                    QUnit.test(label, function (assert) {
+                        if (callback.length) {
+                            var done = assert.async();
+                            callback(function () {
+                                assert.ok(true);
+                                done();
+                            });
+                        } else {
+                            callback();
                             assert.ok(true);
-                            done();
-                        });
-                    } else {
-                        callback();
-                        assert.ok(true);
-                    }
-                });
+                        }
+                    });
+                } else {
+                    QUnit.skip(label);
+                }
             }
         </script>
         <script src="loader.js"></script>
