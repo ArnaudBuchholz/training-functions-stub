@@ -3,12 +3,8 @@
 * Open src\test.js
 * Type
 ```Javascript
-describe("sinon", function () {
+describe("US1", function () {
     "use strict";
-
-    describe("US1", function () {
-
-    });
 
 });
 ```
@@ -19,20 +15,16 @@ describe("sinon", function () {
 * Open src\test.js
 * Paste them as below
 ```Javascript
-describe("sinon", function () {
+describe("US1", function () {
     "use strict";
 
-    describe("US1", function () {
-
-        * it is accessible through sinon.spy
-        * it accepts no parameter
-        * it accepts a function parameter
-        * it rejects any other parameter
-        * it returns a function
-        * it returns a function that behaves like the parameter
-        * it returns a function that does nothing when no parameter was specified
-
-    });
+    * it is accessible through sinon.spy
+    * it accepts no parameter
+    * it accepts a function parameter
+    * it rejects any other parameter
+    * it returns a function
+    * it returns a function that behaves like the parameter
+    * it returns a function that does nothing when no parameter was specified
 
 });
 ```
@@ -44,20 +36,17 @@ describe("sinon", function () {
 * Replace with it("$1");
 * The result should be as below
 ```Javascript
-describe("sinon", function () {
+describe("US1", function () {
     "use strict";
 
-    describe("US1", function () {
+    it("is accessible through sinon.spy");
+    it("accepts no parameter");
+    it("accepts a function parameter");
+    it("rejects any other parameter");
+    it("returns a function");
+    it("returns a function that behaves like the parameter");
+    it("returns a function that does nothing when no parameter was specified");
 
-        it("is accessible through sinon.spy");
-        it("accepts no parameter");
-        it("accepts a function parameter");
-        it("rejects any other parameter");
-        it("returns a function");
-        it("returns a function that behaves like the parameter");
-        it("returns a function that does nothing when no parameter was specified");
-
-    });
 });
 ```
 
@@ -68,9 +57,9 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("is accessible through sinon.spy", function () {
-            assert("function" === typeof sinon.spy);
-        });
+    it("is accessible through sinon.spy", function () {
+        assert("function" === typeof sinon.spy);
+    });
 ```
 
 * Show Mocha
@@ -103,9 +92,9 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("accepts no parameter", function () {
-            sinon.spy();
-        });
+    it("accepts no parameter", function () {
+        sinon.spy();
+    });
 ```
 
 * Show Mocha
@@ -115,9 +104,9 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("accepts a function parameter", function () {
-            sinon.spy(function () {});
-        });
+    it("accepts a function parameter", function () {
+        sinon.spy(function () {});
+    });
 ```
 
 * Show Mocha
@@ -127,15 +116,15 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("rejects any other parameter - boolean (true)", function () {
-            var exceptionCaught;
-            try {
-                sinon.spy(true);
-            } catch (e) {
-                exceptionCaught = e;
-            }
-            assert(undefined !== exceptionCaught);
-        });
+    it("rejects any other parameter - boolean (true)", function () {
+        var exceptionCaught;
+        try {
+            sinon.spy(true);
+        } catch (e) {
+            exceptionCaught = e;
+        }
+        assert(undefined !== exceptionCaught);
+    });
 ```
 
 * Show Mocha
@@ -155,45 +144,45 @@ describe("sinon", function () {
 * Open src\test.js
 * Copy the previous test and change the type and the value
 ```Javascript
-        it("rejects any other parameter - number (42)", function () {
-            var exceptionCaught;
-            try {
-                sinon.spy(42);
-            } catch (e) {
-                exceptionCaught = e;
-            }
-            assert(undefined !== exceptionCaught);
-        });
+    it("rejects any other parameter - number (42)", function () {
+        var exceptionCaught;
+        try {
+            sinon.spy(42);
+        } catch (e) {
+            exceptionCaught = e;
+        }
+        assert(undefined !== exceptionCaught);
+    });
 ```
 
 * Show Mocha
 * Explain [DRY](https://en.wikipedia.org/wiki/Don%27t_repeat_yourself)
 * Refactor the code like the following
 ```Javascript
-        [
-            true,
-            42
-        ].forEach(function (value) {
-            it("rejects any other parameter - " + typeof value + " (" + value.toString() + ")", function () {
-                var exceptionCaught;
-                try {
-                    sinon.spy(value);
-                } catch (e) {
-                    exceptionCaught = e;
-                }
-                assert(undefined !== exceptionCaught);
-            });
-
+    [
+        true,
+        42
+    ].forEach(function (value) {
+        it("rejects any other parameter - " + typeof value + " (" + value.toString() + ")", function () {
+            var exceptionCaught;
+            try {
+                sinon.spy(value);
+            } catch (e) {
+                exceptionCaught = e;
+            }
+            assert(undefined !== exceptionCaught);
         });
+
+    });
 ```
 
 * Add "Hello World!" to the test cases
 ```Javascript
-        [
-            true,
-            42,
-            "Hello World!"
-        ].forEach(function (value) {
+    [
+        true,
+        42,
+        "Hello World!"
+    ].forEach(function (value) {
 ```
 
 * Show Mocha
@@ -220,13 +209,13 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test (split in two)
 ```Javascript
-        it("returns a function", function () {
-            assert("function" === typeof sinon.spy(function () {}));
-        });
+    it("returns a function", function () {
+        assert("function" === typeof sinon.spy(function () {}));
+    });
 
-        it("returns a function - no parameter", function () {
-            assert("function" === typeof sinon.spy());
-        });
+    it("returns a function - no parameter", function () {
+        assert("function" === typeof sinon.spy());
+    });
 ```
 
 * Show Mocha
@@ -253,45 +242,45 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("returns a function that behaves like the parameter", function () {
-            function test () {
-                return 1;
-            }
-            var spiedTest = sinon.spy(test);
-            assert(spiedTest() === test());
-        });
+    it("returns a function that behaves like the parameter", function () {
+        function test () {
+            return 1;
+        }
+        var spiedTest = sinon.spy(test);
+        assert(spiedTest() === test());
+    });
 ```
 
 * Show Mocha
 * Add another test
 ```Javascript
-        it("returns a function that behaves like the parameter - parameters passing", function () {
-            function test () {
-                var sum = 0,
-                    len = arguments.length,
-                    idx;
-                for (idx = 0; idx < len; ++idx) {
-                    sum += arguments[idx];
-                }
-                return sum;
+    it("returns a function that behaves like the parameter - parameters passing", function () {
+        function test () {
+            var sum = 0,
+                len = arguments.length,
+                idx;
+            for (idx = 0; idx < len; ++idx) {
+                sum += arguments[idx];
             }
-            var spiedTest = sinon.spy(test);
-            assert(spiedTest(1, 2, 3) === test(1, 2, 3));
-        });
+            return sum;
+        }
+        var spiedTest = sinon.spy(test);
+        assert(spiedTest(1, 2, 3) === test(1, 2, 3));
+    });
 ```
 
 * Alternate version:
 ```Javascript
-        it("returns a function that behaves like the parameter - parameters passing", function () {
-            function sum () {
-                return [].slice.call(arguments).reduce(function (a, b) {
-                    return a + b;
-                });
-            }
-            assert(6 === sum(1, 2, 3));
-            var spiedSum = sinon.spy(sum);
-            assert(6 === spiedSum(1, 2, 3));
-        });
+    it("returns a function that behaves like the parameter - parameters passing", function () {
+        function sum () {
+            return [].slice.call(arguments).reduce(function (a, b) {
+                return a + b;
+            });
+        }
+        assert(6 === sum(1, 2, 3));
+        var spiedSum = sinon.spy(sum);
+        assert(6 === spiedSum(1, 2, 3));
+    });
 ```
 
 # Step 8
@@ -299,13 +288,13 @@ describe("sinon", function () {
 * Open src\test.js
 * Fill the following test
 ```Javascript
-        it("returns a function that does nothing when no parameter was specified", function () {
-            var spiedTest = sinon.spy();
-            assert(undefined === spiedTest());
-            assert(undefined === spiedTest(1));
-            assert(undefined === spiedTest(1, 2));
-            assert(undefined === spiedTest(1, 2, 3));
-        });
+    it("returns a function that does nothing when no parameter was specified", function () {
+        var spiedTest = sinon.spy();
+        assert(undefined === spiedTest());
+        assert(undefined === spiedTest(1));
+        assert(undefined === spiedTest(1, 2));
+        assert(undefined === spiedTest(1, 2, 3));
+    });
 ```
 
 * Show Mocha
