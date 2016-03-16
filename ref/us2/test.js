@@ -11,7 +11,7 @@
  *  });
  */
 
-describe("sinon", function () {
+describe("sinon.spy", function () {
     "use strict";
 
     describe("US1", function () {
@@ -76,15 +76,7 @@ describe("sinon", function () {
             assert(spiedTest(1, 2, 3) === test(1, 2, 3));
         });
 
-        it("returns a function that does nothing when no parameter was specified", function () {
-            var spiedTest = sinon.spy();
-            assert(undefined === spiedTest());
-            assert(undefined === spiedTest(1));
-            assert(undefined === spiedTest(1, 2));
-            assert(undefined === spiedTest(1, 2, 3));
-        });
-
-        it("forwards this", function () {
+        it("returns a function that behaves like the parameter - forwards this", function () {
             var obj = {
                 method: function () {
                     assert(this === obj);
@@ -92,6 +84,14 @@ describe("sinon", function () {
             };
             obj.method = sinon.spy(obj.method);
             obj.method();
+        });
+
+        it("returns a function that does nothing when no parameter was specified", function () {
+            var spiedTest = sinon.spy();
+            assert(undefined === spiedTest());
+            assert(undefined === spiedTest(1));
+            assert(undefined === spiedTest(1, 2));
+            assert(undefined === spiedTest(1, 2, 3));
         });
 
     });
