@@ -7,18 +7,25 @@
     </head>
     <body>
         <hr>
-        <a href="tmp/us1.html" target="_blank">&raquo; US1</a>
-        <a href="tmp/us2.html" target="_blank">&raquo; US2</a>
-        <hr>
-        <a href="mocha.html" target="_top">&raquo; Mocha</a>
-        <a href="qunit.html" target="_top">&raquo; qUnit</a>
-        <a href="tmp/coverage.html" target="_blank">&raquo; Coverage</a>
-        <br/><label><input type="checkbox" id="sinon">Use real sinon library</label>
-        <br><label>Based on <select id="ref">
-            <option value="src">Sources</option>
-            <option value="us1">User Story 1 (solution)</option>
-            <option value="us2">User Story 2 (solution)</option>
-        </select></label>
+        <table width="100%">
+            <tr><td>
+                <a href="mocha.html" target="_top">&raquo; Mocha</a>
+                <a href="qunit.html" target="_top">&raquo; qUnit</a>
+                <a href="tmp/coverage.html" target="_blank">&raquo; Coverage</a>
+            </td><td align="right">
+                <a href="tmp/us1.html" target="_blank">&raquo; US1</a>
+                <a href="tmp/us2.html" target="_blank">&raquo; US2</a>
+            </td></tr>
+            <tr><td>
+                <label><input type="checkbox" id="sinon">Use real sinon library</label>
+                <br><label>Based on <select id="ref">
+                    <option value="src">Sources</option>
+                    <option value="us1">User Story 1 (solution)</option>
+                    <option value="us2">User Story 2 (solution)</option>
+                    <option value="test">Testing Mocha &amp; qUnit</option>
+                </select></label>
+            </td></tr>
+        </table>
         <script>
 var top = window.top;
 [].slice.call(document.querySelectorAll("a"), 0).forEach(function (a) {
