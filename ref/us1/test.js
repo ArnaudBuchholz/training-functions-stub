@@ -51,7 +51,7 @@ describe("US1", function () {
         assert("function" === typeof sinon.spy());
     });
 
-    it("returns a function that behaves like the parameter", function () {
+    it("returns a function that behaves like the parameter - return value", function () {
         function test () {
             return 1;
         }
@@ -71,6 +71,30 @@ describe("US1", function () {
         }
         var spiedTest = sinon.spy(test);
         assert(spiedTest(1, 2, 3) === test(1, 2, 3));
+    });
+
+    it("returns a function that behaves like the parameter - forwards this", function () {
+        var obj = {
+            method: function () {
+                assert(this === obj);
+            }
+        };
+        obj.method = sinon.spy(obj.method);
+        obj.method();
+    });
+
+    it("returns a function that behaves like the parameter - exception handling", function () {
+        function fail () {
+            throw new Error("We learn from failure, not from success");
+        }
+        var exceptionCaught;
+        try {
+            sinon.spy(fail)();
+        } catch (e) {
+            exceptionCaught = e;
+        }
+        assert(exceptionCaught instanceof Error);
+        assert(exceptionCaught.message === "We learn from failure, not from success");
     });
 
     it("returns a function that does nothing when no parameter was specified", function () {

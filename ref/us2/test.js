@@ -86,6 +86,20 @@ describe("sinon.spy", function () {
             obj.method();
         });
 
+        it("returns a function that behaves like the parameter - exception handling", function () {
+            function fail () {
+                throw new Error("We learn from failure, not from success");
+            }
+            var exceptionCaught;
+            try {
+                sinon.spy(fail)();
+            } catch (e) {
+                exceptionCaught = e;
+            }
+            assert(exceptionCaught instanceof Error);
+            assert(exceptionCaught.message === "We learn from failure, not from success");
+        });
+
         it("returns a function that does nothing when no parameter was specified", function () {
             var spiedTest = sinon.spy();
             assert(undefined === spiedTest());
