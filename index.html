@@ -50,8 +50,8 @@
                                 <ul>
                                     <li>In the software industry since 1998</li>
                                     <li>Former trainer</li>
-                                    <li>Working with JavaScript for 10 years (4 years as a Front-End developper)</li>
-                                    <li>Passionate about JavaScript, curious &amp; experimenting</li>
+                                    <li>Working with JavaScript for 10 years (4 years as a Front-End developer)</li>
+                                    <li>Passionate about JavaScript, curious &amp; <a href="https://github.com/ArnaudBuchholz">experimenting</a></li>
                                     <li>French and almost Canadian</li>
                                 </ul>
                             </td>
@@ -68,29 +68,57 @@
                     <section>
                         <h3>Content and Audience</h3>
                         <ul>
-                            <li>Discovery of Sinon.JS through custom implementation</li>
+                            <li>Discovery of <a href="http://sinonjs.org/">Sinon.JS</a> through custom implementation</li>
                             <li>Best practices using TDD, linting, coverage and automation</li>
-                            <li>Beginner to intermediate</li>
+                            <li>Progressive pace
+                                <ul>
+                                    <li>Beginner to intermediate (US1 &amp; US2)</li>
+                                    <li>Intermediate to advanced <i>(coming stories)</i></li>
+                                </ul>
+                            </li>
                         </ul>
                     </section>
                     <section>
                         <h3>Sinon.JS</h3>
-                        Purpose: When doing unit tests, know when your functions are used and how
-                        (Link + Sample of code)
+                        <p>Standalone test spies, stubs and mocks for JavaScript.<br/>
+                        No dependencies, works with any unit testing framework.</p>
+                        <pre><code class="hljs" data-trim contenteditable>
+"test should call subscribers on publish": function () {
+    var callback = sinon.spy();
+    PubSub.subscribe("message", callback);
+    PubSub.publishSync("message");
+    assertTrue(callback.called);
+}
+                        </code></pre>
                     </section>
                     <section>
                         <h3>Test Driven Development</h3>
                         According to <a href="http://blog.cleancoder.com/uncle-bob/2014/12/17/TheCyclesOfTDD.html">uncle Bob</a>, the steps are:
                         <ul>
-                            <li>You must write a failing test before you write any production code.</li>
-                            <li>You must not write more of a test than is sufficient to fail, or fail to compile.</li>
-                            <li>You must not write more production code than is sufficient to make the currently failing test pass.</li>
+                            <li class="fragment">You must write a failing test <strong>before</strong> you write any production code.</li>
+                            <li class="fragment">You must not write more of a test than is <strong>sufficient to fail</strong>, or fail to compile.</li>
+                            <li class="fragment">You must not write more production code than is <strong>sufficient to make the currently failing test pass</strong>.</li>
+                        </ul>
+                    </section>
+                    <section>
+                        <h3>Tests frameworks</h3>
+                        <p>There are <a href="https://en.wikipedia.org/wiki/List_of_unit_testing_frameworks#JavaScript">many</a>.</p>
+                        Two are used for this training:
+                        <ul>
+                            <li><a href="http://mochajs.org/">Mocha</a></li>
+                            <li><a href="https://qunitjs.com/">qUnit</a> (through an <a href="https://en.wikipedia.org/wiki/Adapter_pattern">adapter</a>)</li>
                         </ul>
                     </section>
                     <section>
                         <h3>Linting</h3>
-                        Purpose: Know your errors before the code is executed
-                        Tool: ESLint
+                        <p>A linter <strong>validates</strong> your code as you write it<br/>
+                            and before it is executed.</p>
+                        <ul>
+                            <li>It catches most common errors</li>
+                            <li>It ensures code consistency</li>
+                        </ul>
+                        <p>There are <a href="http://www.sitepoint.com/comparison-javascript-linting-tools/">some</a>.</p>
+                        The one used for this training is <a href="http://eslint.org/">ESLint</a>.
                     </section>
                     <section>
                         <h3>Coverage</h3>
