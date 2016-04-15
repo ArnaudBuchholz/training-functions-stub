@@ -11,6 +11,7 @@
 		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/css/reveal.css">
 		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/css/theme/sky.css" id="theme">
 		<link rel="stylesheet" href="http://arnaudbuchholz.github.io/reveal/lib/css/zenburn.css">
+        <link rel="stylesheet" href="dashboard/dashboard.css">
 		<!-- Printing and PDF exports -->
 		<script>
 			var link = document.createElement( "link" );
@@ -22,6 +23,7 @@
 		<!--[if lt IE 9]>
 		<script src="http://arnaudbuchholz.github.io/reveal/lib/js/html5shiv.js"></script>
 		<![endif]-->
+        <script src="dashboard/inject.js"></script>
 	</head>
 	<body>
 		<div class="reveal">
@@ -130,14 +132,14 @@
                         <h3>Automation</h3>
                         <p>As a lazy developer, I don't want to spend my time repeating the same tasks
                             in order to focus on my job.</p>
-                        <p>There are <a href="http://blog.cozycloud.cc/technic/2014/06/18/task-runners-comparison/">some</a>.</p>
+                        <p>There are <a href="http://blog.cozycloud.cc/technic/2014/06/18/task-runners-comparison/">some task runners</a>.</p>
                         The one used for this training is <a href="http://gruntjs.com/">Grunt</a>.
                     </section>
 				</section>
 				<section>
-                    <section>
-                        <h3>User Stories</h3>
-                    </section>
+                    <h3>User Stories</h3>
+                </section>
+                <section>
                     <section data-markdown>
                         <script type="text/template">
                             As a developer, I want to substitute a function with a new one in order to gather information from its use
@@ -151,6 +153,16 @@
                             * it returns a function that does nothing when no parameter was specified
                         </script>
                     </section>
+                    <section us-ref="us1/1">
+                        <h3>Step 1</h3>
+                        <p>Create a text file</p>
+                    </section>
+                    <section us-ref="us1/2">
+                        <h3>Step 2</h3>
+                        <p>Fill in acceptance criteria</p>
+                    </section>
+                </section>
+                <section>
                     <section data-markdown>
                         <script type="text/template">
                             As a developer, I want to know how many times a spied function has been called in order to check this information in my tests
@@ -159,10 +171,10 @@
                             * it exposes the property "callCount" that indicates how often the function was called
                         </script>
                     </section>
-                    <section>
-                        <small>more to come...</small>
-                    </section>
-				</section>
+                </section>
+                <section>
+                    <small>more to come...</small>
+                </section>
                 <section>
                     <h3>Your feedback is welcome</h3>
                     <a href="https://github.com/ArnaudBuchholz/training-functions-stub"><img style="border: 0" src="http://arnaudbuchholz.github.io/gfx/GitHub.png"></a>
