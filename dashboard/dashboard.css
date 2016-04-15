@@ -1,0 +1,45 @@
+.hideDashboard {
+    width: 100%;
+    border: 0;
+    position: absolute;
+    left: 0;
+    top: -148px;
+    z-index: 99;
+    animation-name: downtop;
+    animation-duration: 1s;
+}
+
+@keyframes downtop {
+    from {top: 0;}
+    to {top: -148px;}
+}
+
+.showDashboard {
+    width: 100%;
+    border: 0;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 99;
+    animation-name: topdown;
+    animation-duration: 1s;
+}
+
+@keyframes topdown {
+    from {top: -128px;}
+    to {top: 0;}
+}
+
+body.dashboard {
+    margin: 0;
+    padding: 0;
+}
+
+td.report {
+    font-family: verdana, arial;
+    font-size: 2em;
+}
+
+.clickable {
+    cursor: pointer;
+}
