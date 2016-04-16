@@ -4,6 +4,7 @@
         <meta charset="UTF-8">
         <title>Code Dashboard</title>
         <link rel="stylesheet" href="dashboard.css">
+        <link rel="stylesheet" href="gears.css">
         <script src="dashboard.js"></script>
     </head>
     <body class="dashboard">
@@ -19,10 +20,44 @@
             </td><td class="report">
                 <table width="100%"  cellspacing="0" cellpadding="0">
                     <tr><td>Linter&nbsp;status:</td><td width="90%"><img src="up.png"><br /></td></tr>
-                    <tr><td>Tests&nbsp;status:</td><td><img src="up.png"><br /></td></tr>
-                    <tr><td>Code&nbsp;coverage:</td><td><img src="warning.png"><br /></td></tr>
+                    <tr><td><a href="../mocha.html" target="mocha">Tests&nbsp;status</a>:</td><td><img src="up.png"><br /></td></tr>
+                    <tr><td><a href="../tmp/coverage.html" target="coverage">Code&nbsp;coverage:</a></td><td><img src="warning.png"><br /></td></tr>
                 </table>
             </td><td width="128px">
+                <div class="gearbox hidden">
+                    <div class="overlay"></div>
+                    <div class="gear one">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear two">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear three">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                    <div class="gear four large">
+                        <div class="gear-inner">
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                            <div class="bar"></div>
+                        </div>
+                    </div>
+                </div>
                 <img class="clickable" id="play" src="disabled-play.png">
             </td></tr>
         </table>
