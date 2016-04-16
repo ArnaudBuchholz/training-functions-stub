@@ -1,3 +1,7 @@
+.hidden {
+    display: none;
+}
+
 .hideDashboard {
     width: 100%;
     border: 0;
@@ -42,4 +46,8 @@ td.report {
 
 .clickable {
     cursor: pointer;
+}
+
+a {
+    color: black;
 }
