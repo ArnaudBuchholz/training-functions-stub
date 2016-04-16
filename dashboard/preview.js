@@ -24,14 +24,31 @@
         me.appendChild(tag);
     }
 
-    window.addEventListener("load", function () {
-        var codeElement = document.getElementById("preview"),
-            content = codeElement.innerHTML
+    function reformatCode (codeElement) {
+        var content = codeElement.innerHTML
                 .replace(/(&lt;)/g, "<")
                 .replace(/(&gt;)/g, ">")
                 .replace(/(&amp;)/g, "&");
         codeElement.innerHTML = ""; // Easy way to clear current content
         gpf.js.tokenize.apply(codeElement, [content, onTokenFound]);
+    }
+
+    window.addEventListener("load", function () {
+        var fileUrl = window.location.search.substr(1),
+            preview = document.getElementById("preview"),
+            xhr;
+        if (fileUrl) {
+            xhr = new XMLHttpRequest();
+            xhr.open("GET", "../" + fileUrl);
+            xhr.onreadystatechange = function () {
+                if (4 === xhr.readyState) {
+                    document.title = fileUrl;
+                    preview.innerHTML = xhr.responseText;
+                    reformatCode(preview);
+                }
+            };
+            xhr.send();
+        }
     });
 
 }());
