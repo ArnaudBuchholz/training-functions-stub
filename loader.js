@@ -50,6 +50,7 @@
     }
 
     window.addEventListener("load", function () {
+        document.body.setAttribute("style", "zoom: 200%;");
         addElement(document.body, "iframe", {
             src: "loader.html",
             style: "border: 0;",
