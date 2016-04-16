@@ -14,3 +14,8 @@ Training on JavaScript functions using stubs
   * Put your tests inside src/test.js
   * Put your code inside src/sinon.js
   * Open a browser and open [http://localhost:9000/mocha.html](http://localhost:9000/mocha.html)
+
+## Credits
+
+* [Reveal.js](http://lab.hakim.se/reveal-js/)
+* [highlight.js](https://highlightjs.org/)
