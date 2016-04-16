@@ -18,4 +18,4 @@ Training on JavaScript functions using stubs
 ## Credits
 
 * [Reveal.js](http://lab.hakim.se/reveal-js/)
-* [highlight.js](https://highlightjs.org/)
+
