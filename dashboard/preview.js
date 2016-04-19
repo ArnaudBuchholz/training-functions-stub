@@ -17,7 +17,7 @@
                 "\t": "    "
             });
         }
-        // Concatenate to the code ele,ent
+        // Concatenate to the code element
         tag = document.createElement("span");
         tag.className = type;
         tag.appendChild(document.createTextNode(token));
