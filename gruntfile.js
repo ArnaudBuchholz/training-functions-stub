@@ -138,20 +138,6 @@ module.exports = function (grunt) {
         grunt.loadNpmTasks(packageName);
     });
 
-    grunt.registerTask("md2html", "Converts User Story markdown to HTML", function () {
-        var storyIndex = 0,
-            showdown  = require("showdown"),
-            converter = new showdown.Converter(),
-            mdContent,
-            htmlContent;
-        while (storyIndex < storyCount) {
-            ++storyIndex;
-            mdContent = fs.readFileSync("ref/us" + storyIndex + "/README.md").toString();
-            htmlContent = "<link rel=\"stylesheet\" href=\"../us.css\" />\r\n" + converter.makeHtml(mdContent);
-            fs.writeFileSync("tmp/us" + storyIndex + ".html", htmlContent);
-        }
-    });
-
     grunt.registerTask("updateCoverage", "Append fix-coverage to the generated coverage file", function () {
         fs.writeFileSync("tmp/coverage.html", fs.readFileSync("tmp/coverage.html").toString()
             + fs.readFileSync("fix-coverage.html").toString());
