@@ -1,7 +1,18 @@
+body {
+    background-color: white;
+    overflow: scroll;
+}
+
 code {
     display: block;
 }
 
+/* Hum... need to unset some settings */
 code.javascript {
+    border: 0;
+    background-color: white;
     font-size: 24px;
+    white-space: pre;
+    width: unset;
+    overflow: unset;
 }
