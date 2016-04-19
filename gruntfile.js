@@ -47,7 +47,8 @@ module.exports = function (grunt) {
         connect: {
             server: {
                 options: {
-                    port: 9000
+                    port: 9000,
+                    open: true
                 }
             }
         },
@@ -110,14 +111,7 @@ module.exports = function (grunt) {
         watch: {
             scripts: {
                 files: ["src/*.js"],
-                tasks: [
-                    "eslint",
-                    "notify:eslint",
-                    "mochaTest",
-                    "updateCoverage",
-                    "notifySetCoverage",
-                    "notify:coverage"
-                ],
+                tasks: "analyze",
                 options: {
                     spawn: true
                 }
@@ -138,6 +132,15 @@ module.exports = function (grunt) {
         grunt.loadNpmTasks(packageName);
     });
 
+    grunt.registerTask("analyze", [
+        "eslint",
+        "notify:eslint",
+        "mochaTest",
+        "updateCoverage",
+        "notifySetCoverage",
+        "notify:coverage"
+    ]);
+
     grunt.registerTask("updateCoverage", "Append fix-coverage to the generated coverage file", function () {
         fs.writeFileSync("tmp/coverage.html", fs.readFileSync("tmp/coverage.html").toString()
             + fs.readFileSync("fix-coverage.html").toString());
@@ -156,8 +159,8 @@ module.exports = function (grunt) {
 
     // Default task
     grunt.registerTask("default", [
-        "md2html",
         "connect:server",
+        "analyze",
         "watch"
     ]);
 
