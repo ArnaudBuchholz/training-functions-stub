@@ -5,6 +5,13 @@ module.exports = function (grunt) {
     // This will measure the time spent in each task
     require("time-grunt")(grunt);
 
+    /**
+     * Force grunt to continue after failing a task
+     * ** IT IS NOT RECOMMENDED TO USE THIS **
+     * I just want to make sure that all tasks are evaluated whatever happens
+     */
+    grunt.option("force", true);
+
     //region copy implementation
 
     var fs = require("fs");
@@ -69,6 +76,10 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
+            options: {
+                format: "json",
+                outputFile: "tmp/eslint.json"
+            },
             target: [
                 "src/*.js"
             ]
