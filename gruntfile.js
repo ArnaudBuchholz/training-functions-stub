@@ -5,39 +5,32 @@ module.exports = function (grunt) {
     // This will measure the time spent in each task
     require("time-grunt")(grunt);
 
-    // Check the number of stories
-    var fs = require("fs"),
-        storyCount = 0,
-        copySettings = {
-            init: {
-                expand: true,
-                cwd: "ref/",
-                src: "*.js",
-                dest: "src/"
-            }
-        };
-    (function () {
-        var index = 1,
-            stats;
-        while (true) { //eslint-disable-line no-constant-condition
-            try {
-                stats = fs.statSync("ref/us" + index);
-            } catch (e) {
-                break;
-            }
-            if (!stats.isDirectory()) {
-                break;
-            }
-            ++storyCount;
-            copySettings["us" + index] = {
-                expand: true,
-                cwd: "ref/us" + index + "/",
-                src: "*.js",
-                dest: "src/"
-            };
-            ++index;
+    //region copy implementation
+
+    var fs = require("fs");
+
+    function copyFile (from, name) {
+        name += ".js";
+        fs.writeFileSync("src/" + name, fs.readFileSync(from + "/" + name).toString());
+    }
+
+    function copy (ref) {
+        ref = "ref/" + ref;
+        var stats;
+        try {
+            stats = fs.statSync(ref);
+        } catch (e) {
+            return false;
         }
-    }());
+        if (!stats.isDirectory()) {
+            return false;
+        }
+        copyFile(ref, "sinon");
+        copyFile(ref, "test");
+        return true;
+    }
+
+    //endregion
 
     // This will configure each task individually
     grunt.initConfig({
@@ -48,13 +41,31 @@ module.exports = function (grunt) {
             server: {
                 options: {
                     port: 9000,
-                    open: true
+                    open: true,
+                    middleware: function (connect, options, middlewares) {
+
+                        middlewares.unshift(
+                            // Hello world ! example
+                            function (req, res, next) {
+                                if (req.url !== "/hello") {
+                                    return next();
+                                }
+                                res.end("Hello world !");
+                            },
+                            // Copy handler
+                            function (req, res, next) {
+                                if (0 === req.url.indexOf("/copy?")) {
+                                    res.end(copy(req.url.substr(6)).toString());
+                                }
+                                return next();
+                            }
+                        );
+
+                        return middlewares;
+                    }
                 }
             }
         },
-
-        // https://www.npmjs.com/package/grunt-contrib-copy
-        copy: copySettings,
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
@@ -123,7 +134,6 @@ module.exports = function (grunt) {
     // Load the packages that adds features to grunt
     [
         "grunt-contrib-connect",
-        "grunt-contrib-copy",
         "grunt-contrib-watch",
         "grunt-eslint",
         "grunt-mocha-test",
@@ -132,36 +142,47 @@ module.exports = function (grunt) {
         grunt.loadNpmTasks(packageName);
     });
 
-    grunt.registerTask("analyze", [
-        "eslint",
-        "notify:eslint",
-        "mochaTest",
-        "updateCoverage",
-        "notifySetCoverage",
-        "notify:coverage"
-    ]);
+    // Register named tasks as aliases or custom implementation (using functions)
+    (function (aliases) {
+        Object.keys(aliases).forEach(function (name) {
+            grunt.registerTask(name, aliases[name]);
+        });
+    }({
+        analyze: [
+            "eslint",
+            "notify:eslint",
+            "mochaTest",
+            "updateCoverage",
+            "notifySetCoverage",
+            "notify:coverage"
+        ],
 
-    grunt.registerTask("updateCoverage", "Append fix-coverage to the generated coverage file", function () {
-        fs.writeFileSync("tmp/coverage.html", fs.readFileSync("tmp/coverage.html").toString()
-            + fs.readFileSync("fix-coverage.html").toString());
-    });
+        // Append fix-coverage to the generated coverage file
+        updateCoverage: function () {
+            fs.writeFileSync("tmp/coverage.html", fs.readFileSync("tmp/coverage.html").toString()
+                + fs.readFileSync("fix-coverage.html").toString());
+        },
 
-    grunt.registerTask("notifySetCoverage", function () {
-        var coverageData = grunt.file.readJSON("tmp/coverage.json"),
-            message = "Tested, coverage: ";
-        if (coverageData.sloc) {
-            message += Math.floor(1000 * coverageData.hits / coverageData.sloc) / 10 + "%";
-        } else {
-            message += "N/A";
-        }
-        grunt.config.set("notify.coverage.options.message", message);
-    });
+        // Set coverage value for notification
+        notifySetCoverage: function () {
+            var coverageData = grunt.file.readJSON("tmp/coverage.json"),
+                message = "Tested, coverage: ";
+            if (coverageData.sloc) {
+                message += Math.floor(1000 * coverageData.hits / coverageData.sloc) / 10 + "%";
+            } else {
+                message += "N/A";
+            }
+            grunt.config.set("notify.coverage.options.message", message);
+        },
 
-    // Default task
-    grunt.registerTask("default", [
-        "connect:server",
-        "analyze",
-        "watch"
-    ]);
+        copy: copy,
+
+        // Default task
+        "default": [
+            "connect:server",
+            "analyze",
+            "watch"
+        ]
+    }));
 
 };
