@@ -76,13 +76,21 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-eslint
         eslint: {
-            options: {
-                format: "json",
-                outputFile: "tmp/eslint.json"
+            json: {
+                options: {
+                    format: "json",
+                    outputFile: "tmp/eslint.json",
+                    quiet: true
+                },
+                files: {
+                    src: ["src/*.js"]
+                }
             },
-            target: [
-                "src/*.js"
-            ]
+            target: {
+                files: {
+                    src: ["src/*.js"]
+                }
+            }
         },
 
         // https://www.npmjs.com/package/grunt-mocha-test
@@ -115,6 +123,14 @@ module.exports = function (grunt) {
         },
 
         // https://www.npmjs.com/package/grunt-notify
+        "notify_hooks": {
+            options: {
+                enabled: true,
+                title: "training-functions-stub",
+                success: false, // whether successful grunt executions should be notified automatically
+                duration: 3 // the duration of notification in seconds, for `notify-send only
+            }
+        },
         notify: {
             eslint: {
                 options: {
@@ -152,6 +168,7 @@ module.exports = function (grunt) {
     ].forEach(function (packageName) {
         grunt.loadNpmTasks(packageName);
     });
+    grunt.task.run("notify_hooks");
 
     // Register named tasks as aliases or custom implementation (using functions)
     (function (aliases) {
