@@ -14,7 +14,8 @@ module.exports = function (grunt) {
 
     //region copy implementation
 
-    var fs = require("fs");
+    var path = require("path"),
+        fs = require("fs");
 
     function copyFile (from, name) {
         name += ".js";
@@ -38,6 +39,15 @@ module.exports = function (grunt) {
     }
 
     //endregion
+
+    // This is used to pre-allocate empty configurations (note that each object must be unique, hence the function)
+    function genEmptyNotifyConfig () {
+        return {
+            options: {
+                message: ""
+            }
+        };
+    }
 
     // This will configure each task individually
     grunt.initConfig({
@@ -125,24 +135,15 @@ module.exports = function (grunt) {
         // https://www.npmjs.com/package/grunt-notify
         "notify_hooks": {
             options: {
-                enabled: true,
+                enabled: false, // Turned off to control when notify is used
                 title: "training-functions-stub",
-                success: false, // whether successful grunt executions should be notified automatically
-                duration: 3 // the duration of notification in seconds, for `notify-send only
+                duration: 3
             }
         },
         notify: {
-            eslint: {
-                options: {
-                    title: "Training on functions stub",
-                    message: "Verified with ESLint"
-                }
-            },
-            coverage: {
-                options: {
-                    title: "Training on functions stub"
-                }
-            }
+            "eslint-sinon.js": genEmptyNotifyConfig(),
+            "eslint-test.js": genEmptyNotifyConfig(),
+            coverage: genEmptyNotifyConfig()
         },
 
         // https://www.npmjs.com/package/grunt-contrib-watch
@@ -178,12 +179,30 @@ module.exports = function (grunt) {
     }({
         analyze: [
             "eslint",
-            "notify:eslint",
+            "notifySetEslint",
+            "notify:eslint-sinon",
+            "notify:eslint-test",
             "mochaTest",
             "updateCoverage",
             "notifySetCoverage",
             "notify:coverage"
         ],
+
+        // Set eslint message for notification
+        notifySetEslint: function () {
+            // Reset messages
+            grunt.config.set("notify.eslint-sinon.options.message", "sinon.js: linting OK");
+            grunt.config.set("notify.eslint-test.options.message", "test.js: linting OK");
+            var eslintData = grunt.file.readJSON("tmp/eslint.json");
+            eslintData.forEach(function (fileData) {
+                var fileName = path.basename(fileData.filePath, ".js").toLowerCase(),
+                    errorCount = fileData.messages.filter(function (message) {
+                        return 2 === message.severity;
+                    }).length;
+                grunt.config.set("notify.eslint-" + fileName + ".options.message",
+                    fileName + ".js: " + errorCount + " linting errors");
+            });
+        },
 
         // Append fix-coverage to the generated coverage file
         updateCoverage: function () {
@@ -191,10 +210,10 @@ module.exports = function (grunt) {
                 + fs.readFileSync("fix-coverage.html").toString());
         },
 
-        // Set coverage value for notification
+        // Set coverage message for notification
         notifySetCoverage: function () {
             var coverageData = grunt.file.readJSON("tmp/coverage.json"),
-                message = "Tested, coverage: ";
+                message = "coverage: ";
             if (coverageData.sloc) {
                 message += Math.floor(1000 * coverageData.hits / coverageData.sloc) / 10 + "%";
             } else {
