@@ -4,11 +4,11 @@ describe("Test", function () {
     it("is pending");
 
     it("was loaded properly", function () {
-        assert(true);
+        assert(true)
     });
 
     it("fails properly", function () {
-        assert(false);
+        assert(false)
     });
 
     it("supports asynchronism", function (done) {
