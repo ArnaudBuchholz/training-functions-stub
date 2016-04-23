@@ -49,6 +49,8 @@ module.exports = function (grunt) {
         };
     }
 
+    var analyzeInProgress = false;
+
     // This will configure each task individually
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -72,9 +74,24 @@ module.exports = function (grunt) {
                             // Copy handler
                             function (req, res, next) {
                                 if (0 === req.url.indexOf("/copy?")) {
-                                    res.end(copy(req.url.substr(6)).toString());
+                                    res.end(JSON.stringify(copy(req.url.substr(6)).toString()));
                                 }
                                 return next();
+                            },
+                            // Info handler
+                            function (req, res, next) {
+                                if (req.url !== "/info") {
+                                    return next();
+                                }
+                                if (analyzeInProgress) {
+                                    res.end(JSON.stringify({pending: true}));
+                                } else {
+                                    res.end(JSON.stringify({
+                                        pending: false,
+                                        eslint: grunt.file.readJSON("tmp/eslint.json"),
+                                        coverage: grunt.file.readJSON("tmp/coverage.json")
+                                    }));
+                                }
                             }
                         );
 
@@ -178,6 +195,7 @@ module.exports = function (grunt) {
         });
     }({
         analyze: [
+            "analyzeFlag:true",
             "eslint",
             "notifySetEslint",
             "notify:eslint-sinon",
@@ -185,7 +203,8 @@ module.exports = function (grunt) {
             "mochaTest",
             "updateCoverage",
             "notifySetCoverage",
-            "notify:coverage"
+            "notify:coverage",
+            "analyzeFlag:false"
         ],
 
         // Set eslint message for notification
@@ -223,6 +242,11 @@ module.exports = function (grunt) {
         },
 
         copy: copy,
+
+        // Analyze flag update
+        analyzeFlag: function (value) {
+            analyzeInProgress = value === "true";
+        },
 
         // Default task
         "default": [
