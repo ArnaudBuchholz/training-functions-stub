@@ -49,7 +49,14 @@ module.exports = function (grunt) {
         };
     }
 
-    var analyzeInProgress = false;
+    function cleanInfo () {
+        try {
+            fs.unlinkSync("tmp/info.json");
+        } catch (e) {
+            // ignore
+            grunt.log.write(e);
+        }
+    }
 
     // This will configure each task individually
     grunt.initConfig({
@@ -74,7 +81,8 @@ module.exports = function (grunt) {
                             // Copy handler
                             function (req, res, next) {
                                 if (0 === req.url.indexOf("/copy?")) {
-                                    res.end(JSON.stringify(copy(req.url.substr(6)).toString()));
+                                    cleanInfo();
+                                    res.end(copy(req.url.substr(6)).toString().toString());
                                 }
                                 return next();
                             },
@@ -83,16 +91,14 @@ module.exports = function (grunt) {
                                 if (req.url !== "/info") {
                                     return next();
                                 }
-                                if (analyzeInProgress) {
-                                    res.end(JSON.stringify({pending: true}));
-                                } else {
-                                    res.end(JSON.stringify({
-                                        pending: false,
-                                        eslint: grunt.file.readJSON("tmp/eslint.json"),
-                                        mochaTest: grunt.file.readJSON("tmp/mochaTest.json"),
-                                        coverage: grunt.file.readJSON("tmp/coverage.json")
-                                    }));
-                                }
+                                fs.readFile("tmp/info.json", function (err, data) {
+                                    if (err) {
+                                        grunt.warn(err);
+                                        res.end(JSON.stringify({pending: true}));
+                                    } else {
+                                        res.end(data.toString());
+                                    }
+                                });
                             }
                         );
 
@@ -199,7 +205,7 @@ module.exports = function (grunt) {
         });
     }({
         analyze: [
-            "analyzeFlag:true",
+            "cleanInfo",
             "eslint",
             "notifySetEslint",
             "notify:eslint-sinon",
@@ -210,7 +216,7 @@ module.exports = function (grunt) {
             "updateCoverage",
             "notifySetCoverage",
             "notify:coverage",
-            "analyzeFlag:false"
+            "buildInfo"
         ],
 
         // Set eslint message for notification
@@ -265,9 +271,15 @@ module.exports = function (grunt) {
 
         copy: copy,
 
-        // Analyze flag update
-        analyzeFlag: function (value) {
-            analyzeInProgress = value === "true";
+        cleanInfo: cleanInfo,
+
+        buildInfo: function () {
+            fs.writeFileSync("tmp/info.json", JSON.stringify({
+                pending: false,
+                eslint: grunt.file.readJSON("tmp/eslint.json"),
+                mochaTest: grunt.file.readJSON("tmp/mochaTest.json"),
+                coverage: grunt.file.readJSON("tmp/coverage.json")
+            }));
         },
 
         // Default task
