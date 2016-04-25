@@ -1,6 +1,6 @@
 (function () {
     "use strict";
-    /*global gpf*/
+    /*global gpf, xhrGet*/
 
     function onTokenFound (event) {
         var me = this, //eslint-disable-line no-invalid-this
@@ -38,16 +38,12 @@
             preview = document.getElementById("preview"),
             xhr;
         if (fileUrl) {
-            xhr = new XMLHttpRequest();
-            xhr.open("GET", "../" + fileUrl);
-            xhr.onreadystatechange = function () {
-                if (4 === xhr.readyState) {
+            xhrGet("../" + fileUrl)
+                .then(function (responseText) {
                     document.title = fileUrl;
-                    preview.innerHTML = xhr.responseText;
+                    preview.innerHTML = responseText;
                     reformatCode(preview);
-                }
-            };
-            xhr.send();
+                });
         }
     });
 
