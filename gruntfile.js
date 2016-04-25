@@ -89,6 +89,7 @@ module.exports = function (grunt) {
                                     res.end(JSON.stringify({
                                         pending: false,
                                         eslint: grunt.file.readJSON("tmp/eslint.json"),
+                                        mochaTest: grunt.file.readJSON("tmp/mochaTest.json"),
                                         coverage: grunt.file.readJSON("tmp/coverage.json")
                                     }));
                                 }
@@ -122,9 +123,11 @@ module.exports = function (grunt) {
 
         // https://www.npmjs.com/package/grunt-mocha-test
         mochaTest: {
-            test: {
+            testJSON: {
                 options: {
-                    reporter: "spec",
+                    quiet: true,
+                    reporter: "json",
+                    captureFile: "tmp/mochaTest.json",
                     require: [
                         "node.js"
                     ]
@@ -160,6 +163,7 @@ module.exports = function (grunt) {
         notify: {
             "eslint-sinon.js": genEmptyNotifyConfig(),
             "eslint-test.js": genEmptyNotifyConfig(),
+            mochaTest: genEmptyNotifyConfig(),
             coverage: genEmptyNotifyConfig()
         },
 
@@ -201,6 +205,8 @@ module.exports = function (grunt) {
             "notify:eslint-sinon",
             "notify:eslint-test",
             "mochaTest",
+            "notifySetMochaTest",
+            "notify:mochaTest",
             "updateCoverage",
             "notifySetCoverage",
             "notify:coverage",
@@ -221,6 +227,22 @@ module.exports = function (grunt) {
                 grunt.config.set("notify.eslint-" + fileName + ".options.message",
                     fileName + ".js: " + errorCount + " linting errors");
             });
+        },
+
+        // Set mochaTest message for notification
+        notifySetMochaTest: function () {
+            var mochaTestData = grunt.file.readJSON("tmp/mochaTest.json"),
+                stats = mochaTestData.stats,
+                message;
+            if (0 === stats.failures) {
+                message = "Tests OK";
+                if (0 < stats.pending) {
+                    message += " (" + stats.pending + " pending)";
+                }
+            } else {
+                message = "Tests KO: " + stats.passes + "/" + (stats.tests - stats.pending);
+            }
+            grunt.config.set("notify.mochaTest.options.message", message);
         },
 
         // Append fix-coverage to the generated coverage file
