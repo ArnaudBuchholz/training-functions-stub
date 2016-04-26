@@ -1,18 +1,41 @@
 body {
     background-color: white;
-    overflow: scroll;
 }
 
 code {
     display: block;
+    font-family: courier, sans-serif;
 }
 
-/* Hum... need to unset some settings */
 code.javascript {
     border: 0;
     background-color: white;
     font-size: 24px;
     white-space: pre;
-    width: unset;
-    overflow: unset;
+}
+
+code.javascript span.comment {
+    color: #808080;
+    font-style: italic;
+}
+
+code.javascript span.keyword {
+    color: #000080;
+    font-weight: bold;
+}
+
+code.javascript span.string {
+    color: #008000;
+}
+
+code.javascript span.symbol {
+    color: gray;
+}
+
+code.javascript span.number {
+    color: #0000FF;
+}
+
+code.javascript span.identifier {
+    color: #458383;
 }
