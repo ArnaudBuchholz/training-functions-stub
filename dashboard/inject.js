@@ -3,20 +3,30 @@
 
     /*global Reveal*/
 
-    window.go = function () {
-    };
+    var _codeDashboard,
+        _codeDashboardReady = false,
+        _usRef;
 
-    var _codeDashboard;
+    function _updateDashboard () {
+        if (_codeDashboard && "showDashboard" !== _codeDashboard.className) {
+            _codeDashboard.className = "showDashboard";
+        }
+        _codeDashboard.contentWindow.setUsRef(_usRef);
+    }
 
     function _showCodeDashboard (usRef) {
+        _usRef = usRef; // Last one wins
         if (!_codeDashboard) {
             _codeDashboard = document.createElement("iframe");
             _codeDashboard.setAttribute("src", "dashboard/dashboard.html");
-            document.body.appendChild(_codeDashboard);
-        }
-        if (_codeDashboard && "showDashboard" !== _codeDashboard.className) {
-            _codeDashboard.className = "showDashboard";
-            _codeDashboard.contentWindow.usRef = usRef;
+            _codeDashboard = document.body.appendChild(_codeDashboard);
+            _codeDashboard.addEventListener("load", function () {
+                _codeDashboardReady = true;
+                _updateDashboard();
+            });
+
+        } else if (_codeDashboardReady) {
+            _updateDashboard();
         }
     }
 
