@@ -2,20 +2,29 @@
     "use strict";
     /*global xhrGet*/
 
+    var _usRef;
+
+    function _setUsRef (usRef) {
+        _usRef = usRef;
+        document.getElementById("ref-sinon").setAttribute("href", "preview.html?ref/" + usRef + "/sinon.js");
+        document.getElementById("ref-test").setAttribute("href", "preview.html?ref/" + usRef + "/test.js");
+    }
+
     function _applyUsRef () {
         var gearbox = document.getElementById("gearbox"),
-            play = document.getElementById("play");
-        play.className = "hidden";
+            controls = document.getElementById("controls");
+        controls.className = "hidden";
         gearbox.className = "";
         function show () {
-            play.className = "";
+            controls.className = "";
             gearbox.className = "hidden";
         }
-        xhrGet("/copy?" + window.usRef)
+        xhrGet("/copy?" + _usRef)
             .then(function (copyAnswer) {
                 if ("false" === copyAnswer) {
                     show();
                     alert("Copy failed");
+                    return;
                 }
                 function wait () {
                     setTimeout(function () {
@@ -36,6 +45,7 @@
     window.addEventListener("load", function () {
 
         document.getElementById("play").addEventListener("click", _applyUsRef);
+        window.setUsRef = _setUsRef;
 
     });
 
