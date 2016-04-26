@@ -18,4 +18,5 @@ Training on JavaScript functions using stubs
 ## Credits
 
 * [Reveal.js](http://lab.hakim.se/reveal-js/)
+* Icons from [Hawcons](https://www.iconfinder.com/iconsets/hawcons)
 * Gears animation inspired from [alextebbs' codepen](http://codepen.io/alextebbs/pen/tHhrz)
