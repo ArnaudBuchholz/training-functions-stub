@@ -7,6 +7,31 @@ code {
     font-family: courier, sans-serif;
 }
 
+code div.line {
+    height: 32px;
+}
+
+div.line.eslint-error {
+    background-color: #FFEFEF;
+}
+
+code.javascript span.eslint-error {
+    position: relative;
+}
+
+code.javascript span.eslint-error:before {
+    content: "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~";
+    font-size: 0.6em;
+    font-weight: 700;
+    font-family: Times New Roman, Serif;
+    color: red;
+    width: 100%;
+    position: absolute;
+    top: 16px;
+    left: -1px;
+    overflow: hidden;
+}
+
 code.javascript {
     border: 0;
     background-color: white;
