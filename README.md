@@ -20,3 +20,4 @@ Training on JavaScript functions using stubs
 * [Reveal.js](http://lab.hakim.se/reveal-js/)
 * Icons from [Hawcons](https://www.iconfinder.com/iconsets/hawcons)
 * Gears animation inspired from [alextebbs' codepen](http://codepen.io/alextebbs/pen/tHhrz)
+* Wavy underline for ESLint errors inspired from [The Pragmatick](http://stackoverflow.com/questions/28152175/a-wavy-underline-in-css)
