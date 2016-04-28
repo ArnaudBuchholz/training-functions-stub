@@ -208,14 +208,14 @@ module.exports = function (grunt) {
             "cleanInfo",
             "eslint",
             "notifySetEslint",
-            "notify:eslint-sinon",
-            "notify:eslint-test",
+            //"notify:eslint-sinon",
+            //"notify:eslint-test",
             "mochaTest",
             "notifySetMochaTest",
-            "notify:mochaTest",
+            //"notify:mochaTest",
             "updateCoverage",
             "notifySetCoverage",
-            "notify:coverage",
+            //"notify:coverage",
             "buildInfo"
         ],
 
