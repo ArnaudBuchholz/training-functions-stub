@@ -1,0 +1,4 @@
+// sinon implementation
+(function () {
+
+}());
