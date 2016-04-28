@@ -2,7 +2,7 @@
     "use strict";
     /*global gpf, xhrGet*/
 
-    function newLine (codeElement) {
+    function _newLine (codeElement) {
         var line = document.createElement("div"),
             parts = [].slice.call(codeElement.querySelectorAll("code > span"), 0);
         if (0 < parts.length) {
@@ -14,11 +14,10 @@
         }
     }
 
-    function onTokenFound (event) {
+    function _onTokenFound (event) {
         var me = this, //eslint-disable-line no-invalid-this
             type = event.type(),
-            token = event.get("token"),
-            tokens;
+            token = event.get("token");
         if ("space" === type) {
             // Trim any space token before the first non space one
             if (!me.hasChildNodes()) {
@@ -28,14 +27,11 @@
             token = gpf.replaceEx(token, {
                 "\t": "    "
             });
-            tokens = token.split("\n");
-        } else {
-            tokens = [token];
         }
-        tokens.forEach(function (text, index) {
+        token.split("\n").forEach(function (text, index) {
             var tag;
             if (0 < index) {
-                newLine(me);
+                _newLine(me);
             }
             // Concatenate to the code element
             tag = document.createElement("span");
@@ -45,37 +41,67 @@
         });
     }
 
-    function reformatCode (codeElement) {
+    function _reformatCode (codeElement) {
         var content = codeElement.innerHTML
                 .replace(/(&lt;)/g, "<")
                 .replace(/(&gt;)/g, ">")
                 .replace(/(&amp;)/g, "&");
         codeElement.innerHTML = ""; // Easy way to clear current content
-        gpf.js.tokenize.apply(codeElement, [content, onTokenFound]);
-        newLine(codeElement); // potential last line
+        gpf.js.tokenize.apply(codeElement, [content, _onTokenFound]);
+        _newLine(codeElement); // potential last line
     }
 
-    function showEslintErrors (codeElement, messages) {
+    function findCurrentInLine (line, column) {
+        var pos = column,
+            current = line.firstChild;
+        while (current && current.textContent.length < pos) {
+            pos -= current.textContent.length;
+            current = current.nextSibling;
+        }
+        if (!current) {
+            current = document.createElement("span");
+            current.className = "space";
+            current.innerHTML = "&nbsp;";
+            line.appendChild(current);
+        }
+        return current;
+    }
+
+    function _showEslintErrors (codeElement, messages) {
         messages.forEach(function (message) {
             var line = codeElement.querySelectorAll("div.line")[message.line - 1],
-                pos,
-                current;
+                current = findCurrentInLine(line, message.column),
+                eslintData;
             line.className += " eslint-error";
-            pos = message.column;
-            current = line.firstChild;
-            while (current && current.textContent.length < pos) {
-                pos -= current.textContent.length;
-                current = current.nextSibling;
-            }
-            if (!current) {
-                current = document.createElement("span");
-                current.className = "space";
-                current.innerHTML = "&nbsp;";
-                line.appendChild(current);
-            }
             current.className += " eslint-error";
-
+            eslintData = current.getAttribute("data-eslint");
+            if (eslintData) {
+                eslintData = JSON.parse(eslintData);
+            } else {
+                eslintData = [];
+            }
+            eslintData.push({
+                severity: message.severity,
+                ruleId: message.ruleId,
+                message: message.message
+            });
+            current.setAttribute("data-eslint", JSON.stringify(eslintData));
         });
+    }
+
+    function _onClick (event) {
+        var eslintData = event.target.getAttribute("data-eslint"),
+            eslintPopup = document.getElementById("eslint");
+        if (eslintData) {
+            eslintPopup.innerHTML = JSON.parse(eslintData).map(function (message) {
+                return "<a href=\"http://eslint.org/docs/rules/" + message.ruleId + "\" target=\"eslint\" "
+                + "class=\"severity" + message.severity + "\">" + message.message + "</a>";
+            }).join("<br/>");
+            eslintPopup.setAttribute("style", "left: " + event.clientX + "px; top: " + (event.clientY + 16) + "px;");
+            eslintPopup.className = "";
+        } else {
+            eslintPopup.className = "hidden";
+        }
     }
 
     window.addEventListener("load", function () {
@@ -92,7 +118,7 @@
                 .then(function (responseText) {
                     document.title = fileUrl;
                     preview.innerHTML = responseText;
-                    reformatCode(preview);
+                    _reformatCode(preview);
                     if (eslintUrl) {
                         return xhrGet("../" + eslintUrl);
                     }
@@ -104,7 +130,8 @@
                     JSON.parse(eslintText).every(function (data) {
                         // Match the filename only
                         if (data.filePath.indexOf(fileName) === data.filePath.length - fileNameLength) {
-                            showEslintErrors(preview, data.messages);
+                            _showEslintErrors(preview, data.messages);
+                            document.addEventListener("click", _onClick);
                             return false;
                         }
                         return true;
