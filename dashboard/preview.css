@@ -86,7 +86,3 @@ code.javascript span.identifier {
     color: red;
     text-decoration: none;
 }
-
-#eslint a.severity2:before {
-    content: "(X) ";
-}
