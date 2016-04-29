@@ -2,13 +2,10 @@
 (function () {
     "use strict";
 
-    function _nop () {}
-
     function _spy (functionToStub) {
-        if (undefined === functionToStub) {
-            functionToStub = _nop;
-        }
-        if ("function" !== typeof functionToStub) {
+        if (undefined === functionToStub || "function" === typeof functionToStub) {
+
+        } else {
             throw new Error("Invalid parameter");
         }
     }
