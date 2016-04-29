@@ -1,3 +1,16 @@
+h4.acceptance-criteria {
+    font-style: italic;
+    text-transform: unset;
+}
+
+.acceptance-criteria:before {
+    content: "«"
+}
+
+.acceptance-criteria:after {
+    content: "»"
+}
+
 .hidden {
     display: none;
 }
@@ -54,3 +67,16 @@ a {
     text-decoration: none;
 }
 
+div.eslint-overlay  {
+    position: absolute;
+    font-family: verdana, arial;
+    font-size: 3em;
+    color: #C1E2EB;
+    left: 80px;
+    top: 80px;
+    text-shadow: -2px 0 #157EFB, 0 2px #157EFB, 2px 0 #157EFB, 0 -2px #157EFB;
+}
+
+div#eslint-test  {
+    left: 206px;
+}
