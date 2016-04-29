@@ -25,17 +25,44 @@
     function _updateStatus (id, htmlContent) {
         var element = document.getElementById(id);
         if (htmlContent) {
-            element.innerHTML = "<img src=\"down.png\">" + htmlContent;
-        } else {
-            element.innerHTML = "<img src=\"up.png\">";
+            element.innerHTML = htmlContent;
+            return false;
         }
+        element.innerHTML = "<img src=\"up.png\">";
+        return true;
+    }
+
+    function _updateEslintOverlayVisibility () {
+        [
+            "eslint-sinon",
+            "eslint-test"
+        ].forEach(function (id) {
+            var element = document.getElementById(id),
+                className = "eslint-overlay";
+            if ("0" === element.innerHTML) {
+                className += " hidden";
+            }
+            element.className = className;
+        });
     }
 
     function _getEslintStatus (info) {
-        if (0 !== info.eslint.length) {
-            return info.eslint.reduce(function (a, b) {
-                return a + b.messages.length;
-            }, 0) + " messages";
+        var eslintSinonCount = document.getElementById("eslint-sinon"),
+            eslintTestCount = document.getElementById("eslint-test");
+        eslintSinonCount.innerHTML = "0";
+        eslintTestCount.innerHTML = "0";
+        var totalCount = 0;
+        info.eslint.forEach(function (eslintData) {
+            var count = eslintData.messages.length;
+            totalCount += count;
+            if (-1 < eslintData.filePath.indexOf("sinon.js")) { // approximate
+                eslintSinonCount.innerHTML = count;
+            } else {
+                eslintTestCount.innerHTML = count;
+            }
+        });
+        if (totalCount) {
+            return totalCount + " messages";
         }
     }
 
@@ -53,6 +80,7 @@
 
     function _update (info) {
         _updateStatus("eslint", _getEslintStatus(info));
+        _updateEslintOverlayVisibility();
         _updateStatus("test", _getTestStatus(info));
         _updateStatus("coverage", _getCoverageStatus(info));
     }
