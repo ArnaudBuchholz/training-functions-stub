@@ -91,14 +91,21 @@
 
     function _onClick (event) {
         var eslintData = event.target.getAttribute("data-eslint"),
-            eslintPopup = document.getElementById("eslint");
+            eslintPopup = document.getElementById("eslint"),
+            clientWidth,
+            x;
         if (eslintData) {
             eslintPopup.innerHTML = JSON.parse(eslintData).map(function (message) {
                 return "<a href=\"http://eslint.org/docs/rules/" + message.ruleId + "\" target=\"eslint\" "
-                + "class=\"severity" + message.severity + "\">" + message.message + "</a>";
+                + "class=\"severity" + message.severity + "\">" + message.message.replace(/ /g, "&nbsp;") + "</a>";
             }).join("<br/>");
-            eslintPopup.setAttribute("style", "left: " + event.clientX + "px; top: " + (event.clientY + 16) + "px;");
+            x = event.pageX;
+            clientWidth = document.body.scrollWidth;
             eslintPopup.className = "";
+            if (x + eslintPopup.clientWidth > clientWidth) {
+                x = clientWidth - eslintPopup.clientWidth - 16;
+            }
+            eslintPopup.setAttribute("style", "left: " + x + "px; top: " + (event.clientY + 16) + "px;");
         } else {
             eslintPopup.className = "hidden";
         }
