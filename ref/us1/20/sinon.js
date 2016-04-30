@@ -7,8 +7,7 @@
     function _spy (functionToStub) {
         if (undefined === functionToStub) {
             functionToStub = _nop;
-        }
-        if ("function" !== typeof functionToStub) {
+        } else if ("function" !== typeof functionToStub) {
             throw new Error("Invalid parameter");
         }
         return functionToStub;
