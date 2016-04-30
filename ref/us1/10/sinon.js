@@ -8,6 +8,7 @@
         }
     }
 
+    // revealing pattern
     window.sinon = {
 
         spy: _spy

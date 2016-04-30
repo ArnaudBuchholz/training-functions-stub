@@ -8,7 +8,7 @@
         if (undefined === functionToStub) {
             functionToStub = _nop;
         } else if ("function" !== typeof functionToStub) {
-            throw Error("Invalid parameter");
+            throw new Error("Invalid parameter");
         }
         return functionToStub;
     }
