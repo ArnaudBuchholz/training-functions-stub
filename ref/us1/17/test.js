@@ -29,9 +29,10 @@ describe("US1", function () {
     [
         true,
         42,
-        "Hello, World!"
+        "Hello, World!",
+        {}
     ].forEach(function (value) {
-        it("rejects any other parameter - " + typeof value + " (" + value.toString() + ")", function () {
+        it("rejects any other parameter - " + typeof value + " (" + JSON.stringify(value) + ")", function () {
             var exceptionCaught;
             try {
                 sinon.spy(value);
@@ -42,7 +43,14 @@ describe("US1", function () {
         });
     });
 
-    it("returns a function");
+    it("returns a function", function () {
+        assert("function" === typeof sinon.spy(function () {}));
+    });
+
+    it("returns a function - no parameter", function () {
+        assert("function" === typeof sinon.spy());
+    });
+
     it("returns a function that behaves like the parameter");
     it("returns a function that does nothing when no parameter was specified");
 

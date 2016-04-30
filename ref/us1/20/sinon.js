@@ -2,10 +2,16 @@
 (function () {
     "use strict";
 
+    function _nop () {}
+
     function _spy (functionToStub) {
-        if (undefined !== functionToStub && "function" !== typeof functionToStub) {
+        if (undefined === functionToStub) {
+            functionToStub = _nop;
+        }
+        if ("function" !== typeof functionToStub) {
             throw new Error("Invalid parameter");
         }
+        return functionToStub;
     }
 
     window.sinon = {
