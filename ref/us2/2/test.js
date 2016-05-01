@@ -116,6 +116,12 @@ describe("sinon.spy", function () {
     describe("US2", function () {
 
         describe("it exposes the property \"called\" the indicates if the function was called", function () {
+
+            it("was never called", function () {
+                var spiedTest = sinon.spy();
+                assert(!spiedTest.called);
+            });
+
         });
 
         describe("it exposes the property \"callCount\" that indicates how often the function was called", function () {
