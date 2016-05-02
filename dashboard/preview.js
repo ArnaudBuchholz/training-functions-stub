@@ -105,7 +105,7 @@
             if (x + eslintPopup.clientWidth > clientWidth) {
                 x = clientWidth - eslintPopup.clientWidth - 16;
             }
-            eslintPopup.setAttribute("style", "left: " + x + "px; top: " + (event.clientY + 16) + "px;");
+            eslintPopup.setAttribute("style", "left: " + x + "px; top: " + (event.pageY + 16) + "px;");
         } else {
             eslintPopup.className = "hidden";
         }
