@@ -129,20 +129,20 @@ describe("sinon.spy", function () {
                 assert(verify(spiedTest, 1));
             });
 
-            var COUNT = 10;
+            var N = 10;
 
-            it("was called " + COUNT + " times - synchronously", function () {
+            it("was called " + N + " times - synchronously", function () {
                 var spiedTest = sinon.spy(),
-                    count = COUNT;
+                    count = N;
                 while (count--) {
                     spiedTest();
                 }
-                assert(verify(spiedTest, COUNT));
+                assert(verify(spiedTest, N));
             });
 
-            it("was called " + COUNT + " times - asynchronously", function (done) {
+            it("was called " + N + " times - asynchronously", function (done) {
                 var spiedTest = sinon.spy(),
-                    count = COUNT,
+                    count = N,
                     promises = [];
                 function getPromise () {
                     return new Promise(function (resolve, reject) {
@@ -161,7 +161,7 @@ describe("sinon.spy", function () {
                 }
                 Promise.all(promises)
                     .then(function () {
-                        assert(verify(spiedTest, COUNT));
+                        assert(verify(spiedTest, N));
                         done();
                     }, function (reason) {
                         done(reason);

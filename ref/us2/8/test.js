@@ -128,11 +128,11 @@ describe("sinon.spy", function () {
                 assert(spiedTest.called);
             });
 
-            var COUNT = 10;
+            var N = 10;
 
-            it("was called " + COUNT + " times - synchronously", function () {
+            it("was called " + N + " times - synchronously", function () {
                 var spiedTest = sinon.spy(),
-                    count = COUNT;
+                    count = N;
                 while (count--) {
                     spiedTest();
                 }
