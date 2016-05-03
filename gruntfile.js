@@ -58,6 +58,9 @@ module.exports = function (grunt) {
         }
     }
 
+    // Distinguish modifications made directly on sources from the one coming from the presentation
+    var useNotifyForDirectModification = true;
+
     // This will configure each task individually
     grunt.initConfig({
         pkg: grunt.file.readJSON("package.json"),
@@ -81,6 +84,7 @@ module.exports = function (grunt) {
                             // Copy handler
                             function (req, res, next) {
                                 if (0 === req.url.indexOf("/copy?")) {
+                                    useNotifyForDirectModification = false; // Modification coming from presentation
                                     cleanInfo();
                                     res.end(copy(req.url.substr(6)).toString().toString());
                                 }
@@ -179,7 +183,7 @@ module.exports = function (grunt) {
                 files: ["src/*.js"],
                 tasks: "analyze",
                 options: {
-                    spawn: true
+                    spawn: false
                 }
             }
         }
@@ -204,20 +208,27 @@ module.exports = function (grunt) {
             grunt.registerTask(name, aliases[name]);
         });
     }({
-        analyze: [
-            "cleanInfo",
-            "eslint",
-            "notifySetEslint",
-            //"notify:eslint-sinon",
-            //"notify:eslint-test",
-            "mochaTest",
-            "notifySetMochaTest",
-            //"notify:mochaTest",
-            "updateCoverage",
-            "notifySetCoverage",
-            //"notify:coverage",
-            "buildInfo"
-        ],
+        analyze: function () {
+            var tasks = {
+                "cleanInfo":            true,
+                "eslint":               true,
+                "notifySetEslint" :     false,
+                "notify:eslint-sinon":  false,
+                "notify:eslint-test":   false,
+                "mochaTest":            true,
+                "notifySetMochaTest":   false,
+                "notify:mochaTest":     false,
+                "updateCoverage":       true,
+                "notifySetCoverage":    false,
+                "notify:coverage":      false,
+                "buildInfo":            true
+            };
+            Object.keys(tasks).forEach(function (taskName) {
+                if (tasks[taskName] || useNotifyForDirectModification) {
+                    grunt.task.run(taskName);
+                }
+            });
+        },
 
         // Set eslint message for notification
         notifySetEslint: function () {
@@ -280,6 +291,7 @@ module.exports = function (grunt) {
                 mochaTest: grunt.file.readJSON("tmp/mochaTest.json"),
                 coverage: grunt.file.readJSON("tmp/coverage.json")
             }));
+            useNotifyForDirectModification = true; // Cycle completed, restore the flag
         },
 
         // Default task
