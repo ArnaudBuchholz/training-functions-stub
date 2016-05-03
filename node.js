@@ -3,6 +3,8 @@
 // Import assert function
 global.assert = require("assert");
 
+delete global._$jscoverage; // Purge any previous blanket use
+
 // Code coverage helper
 require("blanket")({
     pattern: "src/sinon.js"
