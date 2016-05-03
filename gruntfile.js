@@ -97,7 +97,7 @@ module.exports = function (grunt) {
                                 }
                                 fs.readFile("tmp/info.json", function (err, data) {
                                     if (err) {
-                                        grunt.warn(err);
+                                        // grunt.warn(err);
                                         res.end(JSON.stringify({pending: true}));
                                     } else {
                                         res.end(data.toString());
