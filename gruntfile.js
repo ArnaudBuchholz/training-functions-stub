@@ -138,6 +138,7 @@ module.exports = function (grunt) {
                     quiet: true,
                     reporter: "json",
                     captureFile: "tmp/mochaTest.json",
+                    clearRequireCache: true,
                     require: [
                         "node.js"
                     ]
