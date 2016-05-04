@@ -19,16 +19,21 @@
     function _handleFrameKeyEvent (event) {
         // There is no easy way to easily forward a keyboard event, just manually translate the most important ones
         var typeMapping = _mappings[event.type],
+            actionMapping;
+        if (typeMapping) {
             actionMapping = typeMapping[event[typeMapping.$property]];
-        if (actionMapping) {
-            Reveal[actionMapping]();
+            if (actionMapping) {
+                Reveal[actionMapping]();
+            }
         }
         return true;
     }
 
     function _installKeyboardHook () {
-        _codeDashboard.contentWindow.addEventListener("keydown", _handleFrameKeyEvent);
-        _codeDashboard.contentWindow.addEventListener("keypress", _handleFrameKeyEvent);
+        var dashboardWindow = _codeDashboard.contentWindow;
+        window.dashboard = dashboardWindow.dashboard; // Convenient shortcut
+        dashboardWindow.addEventListener("keydown", _handleFrameKeyEvent);
+        dashboardWindow.addEventListener("keypress", _handleFrameKeyEvent);
     }
 
     function _updateDashboard () {
