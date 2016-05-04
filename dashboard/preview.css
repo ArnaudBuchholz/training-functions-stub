@@ -35,7 +35,6 @@ code.javascript span.eslint-error:before {
 
 code.javascript {
     border: 0;
-    background-color: white;
     font-size: 24px;
     white-space: pre;
 }
@@ -85,4 +84,13 @@ code.javascript span.identifier {
 #eslint a.severity2 {
     color: red;
     text-decoration: none;
+}
+
+#filename {
+    z-index: -1;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    font-size: 8em;
+    color: #DDDDDD;
 }
