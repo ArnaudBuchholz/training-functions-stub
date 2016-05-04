@@ -120,6 +120,7 @@
             eslintUrl = fileUrl[1];
             fileUrl = fileUrl[0];
         }
+        document.getElementById("filename").innerHTML = fileUrl;
         if (fileUrl) {
             xhrGet("../" + fileUrl)
                 .then(function (responseText) {
