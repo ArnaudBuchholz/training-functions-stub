@@ -127,4 +127,32 @@
 
     });
 
+    var _shortCuts;
+
+    function _getShortcuts () {
+        _shortCuts =  {};
+        var elements = document.querySelectorAll("[key-shortcut]");
+        [].slice.call(elements).forEach(function (element) {
+            var shortcut = element.getAttribute("key-shortcut");
+            _shortCuts[shortcut] = element;
+        });
+    }
+
+    window.dashboard = {
+
+        shortcut: function (key) {
+            if (!_shortCuts) {
+                _getShortcuts();
+            }
+            if ("0" === key && window.parent) {
+                window.parent.alert("Back to presentation"); // back to presentation
+            }
+            var element = _shortCuts[key];
+            if (element) {
+                element.click();
+            }
+        }
+
+    };
+
 }());
