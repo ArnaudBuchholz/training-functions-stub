@@ -7,22 +7,23 @@
         <link rel="stylesheet" href="gears.css">
         <script src="xhr.js"></script>
         <script src="dashboard.js"></script>
+        <script src="shortcut.js"></script>
     </head>
     <body class="dashboard">
         <table width="100%" cellspacing="0" cellpadding="0">
             <tr><td width="128px" title="src/sinon.js">
-                <a href="preview.html?src/sinon.js&tmp/eslint.json" target="sinon">
+                <a key-shortcut="1" href="preview.html?src/sinon.js&tmp/eslint.json" target="sinon">
                     <img src="sinon.png" border="0">
                 </a>
             </td><td width="128px" title="src/test.js">
-                <a href="preview.html?src/test.js&tmp/eslint.json" target="test">
+                <a key-shortcut="2" href="preview.html?src/test.js&tmp/eslint.json" target="test">
                     <img src="test.png" border="0">
                 </a>
             </td><td class="report">
                 <table width="100%"  cellspacing="0" cellpadding="0">
                     <tr><td>Linter&nbsp;status:</td><td width="90%" id="eslint">&nbsp;</td></tr>
-                    <tr><td><a href="../mocha.html" target="mocha">Tests&nbsp;status</a>:</td><td id="test">&nbsp;</td></tr>
-                    <tr><td><a href="../tmp/coverage.html" target="coverage">Code&nbsp;coverage:</a></td><td id="coverage">&nbsp;</td></tr>
+                    <tr><td><a key-shortcut="4" href="../mocha.html" target="mocha">Tests&nbsp;status</a>:</td><td id="test">&nbsp;</td></tr>
+                    <tr><td><a key-shortcut="5" href="../tmp/coverage.html" target="coverage">Code&nbsp;coverage:</a></td><td id="coverage">&nbsp;</td></tr>
                 </table>
             </td><td width="176px">
                 <div id="gearbox" class="hidden">
@@ -62,17 +63,17 @@
                 <table id="controls" cellspacing="0" cellpadding="0">
                     <tr>
                         <td>
-                            <a id="ref-sinon" href="" target="ref-sinon">
+                            <a key-shortcut="7" id="ref-sinon" href="" target="ref-sinon">
                                 <img src="ref-sinon.png" border="0">
                             </a>
                         </td>
                         <td rowspan="2" title="Apply">
-                            <img class="clickable" id="play" src="play.png">
+                            <img key-shortcut="9" class="clickable" id="play" src="play.png">
                         </td>
                     </tr>
                     <tr>
                         <td>
-                            <a id="ref-test" href="" target="ref-test">
+                            <a key-shortcut="8" id="ref-test" href="" target="ref-test">
                                 <img src="ref-test.png" border="0">
                             </a>
                         </td>
