@@ -2,6 +2,8 @@
     "use strict";
     /*global gpf, xhrGet*/
 
+    //region Syntax highlighting
+
     function _newLine (codeElement) {
         var line = document.createElement("div"),
             parts = [].slice.call(codeElement.querySelectorAll("code > span"), 0);
@@ -51,7 +53,11 @@
         _newLine(codeElement); // potential last line
     }
 
-    function findCurrentInLine (line, column) {
+    //endregion
+
+    //region ESLint integration
+
+    function findElementInLine (line, column) {
         var pos = column,
             current = line.firstChild;
         while (current && current.textContent.length < pos) {
@@ -70,7 +76,7 @@
     function _showEslintErrors (codeElement, messages) {
         messages.forEach(function (message) {
             var line = codeElement.querySelectorAll("div.line")[message.line - 1],
-                current = findCurrentInLine(line, message.column),
+                current = findElementInLine(line, message.column),
                 eslintData;
             line.className += " eslint-error";
             current.className += " eslint-error";
@@ -89,7 +95,7 @@
         });
     }
 
-    function _onClick (event) {
+    function _checkEslintTooltip (event) {
         var eslintData = event.target.getAttribute("data-eslint"),
             eslintPopup = document.getElementById("eslint"),
             clientWidth,
@@ -97,7 +103,7 @@
         if (eslintData) {
             eslintPopup.innerHTML = JSON.parse(eslintData).map(function (message) {
                 return "<a href=\"http://eslint.org/docs/rules/" + message.ruleId + "\" target=\"eslint\" "
-                + "class=\"severity" + message.severity + "\">" + message.message.replace(/ /g, "&nbsp;") + "</a>";
+                    + "class=\"severity" + message.severity + "\">" + message.message.replace(/ /g, "&nbsp;") + "</a>";
             }).join("<br/>");
             x = event.pageX;
             clientWidth = document.body.scrollWidth;
@@ -111,6 +117,10 @@
         }
     }
 
+    //endregion
+
+    //region Annotations
+
     function _annotateLine (lineElement, annotation, firstLine) {
         if ("string" === typeof annotation["class"]) {
             lineElement.className += " " + annotation["class"];
@@ -119,7 +129,7 @@
             if (firstLine) {
                 lineElement.className += " expandable";
                 var expandElement = document.createElement("span");
-                expandElement.className = "button";
+                expandElement.className = "expand-button";
                 expandElement.innerHTML = "...";
                 lineElement.appendChild(expandElement);
             } else {
@@ -143,6 +153,41 @@
                 }
             }
         });
+    }
+
+    function _checkAnnotation (event) {
+        var element = event.target,
+            current,
+            className,
+            pos;
+        if (element.className === "expand-button") {
+            // First line
+            current = element.parentNode;
+            while (current && "div" !== current.tagName.toLowerCase()) {
+                current = element.parentNode;
+            }
+            while (current) {
+                current = current.nextSibling;
+                className = current.className;
+                if (-1 < className.indexOf(" collapsed")) {
+                    pos = className.indexOf(" show");
+                    if (-1 === pos) {
+                        current.className += " show";
+                    } else {
+                        current.className = className.substr(0, pos);
+                    }
+                } else {
+                    break;
+                }
+            }
+        }
+    }
+
+    //endregion
+
+    function _onClick (event) {
+        _checkEslintTooltip(event);
+        _checkAnnotation(event);
     }
 
     window.addEventListener("load", function () {
