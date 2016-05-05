@@ -12,7 +12,7 @@ code div.line {
 }
 
 div.line.eslint-error {
-    background-color: #FFEFEF;
+    background-color: rgba(255, 220, 220, 0.5);
 }
 
 code.javascript span.eslint-error {
