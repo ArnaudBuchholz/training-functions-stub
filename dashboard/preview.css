@@ -94,3 +94,22 @@ code.javascript span.identifier {
     font-size: 8em;
     color: #DDDDDD;
 }
+
+/* Annotations */
+
+div.line.new {
+    background-color: rgba(255, 255, 64, 0.5);
+}
+
+div.line.expandable {
+    background-color: rgba(220, 220, 220, 0.5);
+}
+
+div.line.expandable .button {
+    background-color: rgb(220, 220, 220);
+    cursor: pointer;
+}
+
+div.line.collapsed {
+    display: none;
+}
