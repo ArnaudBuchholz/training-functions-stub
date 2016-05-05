@@ -111,6 +111,40 @@
         }
     }
 
+    function _annotateLine (lineElement, annotation, firstLine) {
+        if ("string" === typeof annotation["class"]) {
+            lineElement.className += " " + annotation["class"];
+        }
+        if (true === annotation.collapse) {
+            if (firstLine) {
+                lineElement.className += " expandable";
+                var expandElement = document.createElement("span");
+                expandElement.className = "button";
+                expandElement.innerHTML = "...";
+                lineElement.appendChild(expandElement);
+            } else {
+                lineElement.className += " collapsed";
+            }
+        }
+    }
+
+    function _annotate (codeElement, annotations) {
+        annotations.forEach(function (annotation) {
+            var range = annotation.range,
+                lineIndex,
+                lineElement;
+            if ("number" === typeof range) {
+                range = [range, range];
+            }
+            for (lineIndex = range[0]; lineIndex <= range[1]; ++lineIndex) {
+                lineElement = codeElement.querySelectorAll("div.line")[lineIndex - 1];
+                if (lineElement) {
+                    _annotateLine(lineElement, annotation, lineIndex === range[0]);
+                }
+            }
+        });
+    }
+
     window.addEventListener("load", function () {
         var fileUrl = window.location.search.substr(1),
             eslintUrl,
@@ -120,6 +154,7 @@
             eslintUrl = fileUrl[1];
             fileUrl = fileUrl[0];
         }
+        document.addEventListener("click", _onClick);
         document.getElementById("filename").innerHTML = fileUrl;
         if (fileUrl) {
             xhrGet("../" + fileUrl)
@@ -127,6 +162,10 @@
                     document.title = fileUrl;
                     preview.innerHTML = responseText;
                     _reformatCode(preview);
+                    xhrGet("../" + fileUrl + ".annotations")
+                        .then(function (annotationsText) {
+                            _annotate(preview, JSON.parse(annotationsText));
+                        });
                     if (eslintUrl) {
                         return xhrGet("../" + eslintUrl);
                     }
@@ -139,7 +178,6 @@
                         // Match the filename only
                         if (data.filePath.indexOf(fileName) === data.filePath.length - fileNameLength) {
                             _showEslintErrors(preview, data.messages);
-                            document.addEventListener("click", _onClick);
                             return false;
                         }
                         return true;
