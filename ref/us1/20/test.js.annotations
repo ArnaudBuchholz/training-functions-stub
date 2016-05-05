@@ -1,0 +1,31 @@
+[{
+    "range": [17, 20],
+    "collapse": true
+}, {
+    "range": [21, 24],
+    "collapse": true
+}, {
+    "range": [25, 28],
+    "collapse": true
+}, {
+    "range": [29, 45],
+    "collapse": true
+}, {
+    "range": [46, 49],
+    "collapse": true
+}, {
+    "range": [50, 52],
+    "collapse": true
+}, {
+    "range": [54, 61],
+    "class": "new"
+}, {
+    "range": [63, 72],
+    "class": "new"
+}, {
+    "range": [74, 86],
+    "class": "new"
+}, {
+    "range": [88, 99],
+    "class": "new"
+}]

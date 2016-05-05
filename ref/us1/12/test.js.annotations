@@ -1,0 +1,13 @@
+[{
+    "range": [17, 20],
+    "collapse": true
+}, {
+    "range": [21, 24],
+    "collapse": true
+}, {
+    "range": [25, 27],
+    "collapse": true
+}, {
+    "range": [29, 42],
+    "class": "new"
+}]
