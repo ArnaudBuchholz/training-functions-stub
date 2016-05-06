@@ -3,8 +3,8 @@
     "collapse": true
 }, {
     "range": [14, 15],
-    "class": "new"
+    "updated": true
 }, {
     "range": [116, 124],
-    "class": "new"
+    "updated": true
 }]

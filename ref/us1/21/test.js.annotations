@@ -30,5 +30,5 @@
     "collapse": true
 }, {
     "range": [101, 107],
-    "class": "new"
+    "updated": true
 }]

@@ -18,14 +18,14 @@
     "collapse": true
 }, {
     "range": [54, 61],
-    "class": "new"
+    "updated": true
 }, {
     "range": [63, 72],
-    "class": "new"
+    "updated": true
 }, {
     "range": [74, 86],
-    "class": "new"
+    "updated": true
 }, {
     "range": [88, 99],
-    "class": "new"
+    "updated": true
 }]

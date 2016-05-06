@@ -1,7 +1,7 @@
 [{
     "range": 15,
-    "class": "new"
+    "updated": true
 }, {
     "range": 19,
-    "class": "new"
+    "updated": true
 }]
