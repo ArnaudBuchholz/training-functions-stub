@@ -1,4 +1,10 @@
 [{
     "range": [17, 114],
     "collapse": true
+}, {
+    "range": [14, 15],
+    "class": "new"
+}, {
+    "range": [116, 124],
+    "class": "new"
 }]
