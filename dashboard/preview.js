@@ -95,7 +95,7 @@
         });
     }
 
-    function _checkEslintTooltip (event) {
+    function _clickEslintTooltip (event) {
         var eslintData = event.target.getAttribute("data-eslint"),
             eslintPopup = document.getElementById("eslint"),
             clientWidth,
@@ -121,20 +121,35 @@
 
     //region Annotations
 
-    function _annotateLine (lineElement, annotation, firstLine) {
-        if ("string" === typeof annotation["class"]) {
-            lineElement.className += " " + annotation["class"];
+    function _flagLineAsUpdated (lineElement, firstLineInRange) {
+        var anchor;
+        lineElement.className += " updated";
+        if (firstLineInRange) {
+            anchor = document.createElement("a");
+            anchor.setAttribute("name", "update");
+            lineElement.parentNode.insertBefore(anchor, lineElement);
+            window.location.hash = "update";
+        }
+    }
+
+    function _flagLineAsCollapsed (lineElement, firstLineInRange) {
+        if (firstLineInRange) {
+            lineElement.className += " expandable";
+            var expandElement = document.createElement("span");
+            expandElement.className = "expand-button";
+            expandElement.innerHTML = "...";
+            lineElement.appendChild(expandElement);
+        } else {
+            lineElement.className += " collapsed";
+        }
+    }
+
+    function _annotateLine (lineElement, annotation, firstLineInRange) {
+        if (true === annotation.updated) {
+            _flagLineAsUpdated(lineElement, firstLineInRange);
         }
         if (true === annotation.collapse) {
-            if (firstLine) {
-                lineElement.className += " expandable";
-                var expandElement = document.createElement("span");
-                expandElement.className = "expand-button";
-                expandElement.innerHTML = "...";
-                lineElement.appendChild(expandElement);
-            } else {
-                lineElement.className += " collapsed";
-            }
+            _flagLineAsCollapsed(lineElement, firstLineInRange);
         }
     }
 
@@ -155,7 +170,7 @@
         });
     }
 
-    function _checkAnnotation (event) {
+    function _clickAnnotation (event) {
         var element = event.target,
             current,
             className,
@@ -186,8 +201,8 @@
     //endregion
 
     function _onClick (event) {
-        _checkEslintTooltip(event);
-        _checkAnnotation(event);
+        _clickEslintTooltip(event);
+        _clickAnnotation(event);
     }
 
     window.addEventListener("load", function () {
