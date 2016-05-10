@@ -4,10 +4,41 @@
 
     var _usRef;
 
+    function _noAnnotations (usRef, refIcon) {
+        if (usRef !== _usRef) {
+            // Obsolete
+            return;
+        }
+        refIcon.className = "ref";
+    }
+
+    function _processAnnotations (usRef, refIcon, annotationsText) {
+        if (usRef !== _usRef) {
+            // Obsolete
+            return;
+        }
+        if (JSON.parse(annotationsText).every(function (annotation) {
+            return true !== annotation.updated;
+        })) {
+            _noAnnotations(usRef, refIcon);
+        } else {
+            refIcon.className = "ref updated";
+        }
+    }
+
     function _setUsRef (usRef) {
+        var basePath = "ref/" + usRef + "/",
+            sinonRefIcon = document.getElementById("ref-sinon"),
+            sinonPath = basePath + "sinon.js",
+            testRefIcon = document.getElementById("ref-test"),
+            testPath = basePath + "test.js";
         _usRef = usRef;
-        document.getElementById("ref-sinon").setAttribute("href", "preview.html?ref/" + usRef + "/sinon.js");
-        document.getElementById("ref-test").setAttribute("href", "preview.html?ref/" + usRef + "/test.js");
+        sinonRefIcon.setAttribute("href", "preview.html?" + sinonPath);
+        xhrGet("../" + sinonPath + ".annotations")
+            .then(_processAnnotations.bind(null, usRef, sinonRefIcon), _noAnnotations.bind(null, usRef, sinonRefIcon));
+        testRefIcon.setAttribute("href", "preview.html?" + testPath);
+        xhrGet("../" + testPath + ".annotations")
+            .then(_processAnnotations.bind(null, usRef, testRefIcon), _noAnnotations.bind(null, usRef, testRefIcon));
     }
 
     function _clean () {
