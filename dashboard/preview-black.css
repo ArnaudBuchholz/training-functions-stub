@@ -1,0 +1,58 @@
+body {
+    background-color: #282C34;
+}
+
+div.line.eslint-error {
+    background-color: rgba(255, 0, 0, 0.2);
+}
+
+code.javascript span.comment {
+    color: #5B626F;
+}
+
+code.javascript span.keyword {
+    color: #C678DD;
+}
+
+code.javascript span.string {
+    color: #98C379;
+}
+
+code.javascript span.symbol {
+    color: #A6B2BF;
+}
+
+code.javascript span.number {
+    color: #D19A66;
+}
+
+code.javascript span.identifier {
+    color: #61AFEF;
+}
+
+#eslint {
+    border: 1px solid black;
+    background-color: lightgoldenrodyellow;
+}
+
+#filename {
+    color: #5B626F;
+}
+
+div.line.expandable .expand-button {
+    background-color: rgb(128, 128, 128);
+    border: solid 1px white;
+    color: white;
+}
+
+div.line.updated {
+    background-color: rgba(255, 255, 192, 0.2);
+}
+
+div.line.expandable {
+    background-color: #2C323C;
+}
+
+div.line.collapsed {
+    background-color: #2C323C;
+}
