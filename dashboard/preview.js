@@ -200,6 +200,37 @@
 
     //endregion
 
+    //region color scheme
+
+    var _colorSchemeKey = "preview-color-scheme",
+        _colorScheme = "white";
+
+    function _setColorScheme () {
+        var link = document.getElementById("colorscheme");
+        if (link) {
+            link.parentNode.removeChild(link);
+        }
+        link = document.createElement("link");
+        link.id = "colorscheme";
+        link.setAttribute("rel", "stylesheet");
+        link.setAttribute("href", "preview-" + _colorScheme + ".css");
+        document.head.appendChild(link);
+    }
+
+    document.addEventListener("keypress", function (event) {
+        if (event.code === "KeyC") {
+            if ("white" === _colorScheme) {
+                _colorScheme =  "black";
+            } else {
+                _colorScheme = "white";
+            }
+            localStorage.setItem(_colorSchemeKey, _colorScheme);
+            _setColorScheme();
+        }
+    });
+
+    //endregion
+
     function _onClick (event) {
         _clickEslintTooltip(event);
         _clickAnnotation(event);
@@ -216,6 +247,8 @@
         }
         document.addEventListener("click", _onClick);
         document.getElementById("filename").innerHTML = fileUrl;
+        _colorScheme = localStorage.getItem(_colorSchemeKey) || "white";
+        _setColorScheme();
         if (fileUrl) {
             xhrGet("../" + fileUrl)
                 .then(function (responseText) {
