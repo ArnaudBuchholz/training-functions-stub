@@ -4,79 +4,81 @@
 
     //region Syntax highlighting
 
-    function _newLine (codeElement) {
-        var line = document.createElement("div"),
-            parts = [].slice.call(codeElement.querySelectorAll("code > span"), 0);
-        if (0 < parts.length) {
-            parts.forEach(function (part) {
-                line.appendChild(part);
-            });
-            line.setAttribute("class", "line");
-            codeElement.appendChild(line);
-        }
-    }
-
-    function _onTokenFound (event) {
-        var me = this, //eslint-disable-line no-invalid-this
-            type = event.type(),
-            token = event.get("token");
-        if ("space" === type) {
-            // Trim any space token before the first non space one
-            if (!me.hasChildNodes()) {
-                return;
-            }
-            // Replace tabs with 4 spaces
-            token = gpf.replaceEx(token, {
-                "\t": "    "
-            });
-        }
-        token.split("\n").forEach(function (text, index) {
-            var tag;
-            if (0 < index) {
-                _newLine(me);
-            }
-            // Concatenate to the code element
-            tag = document.createElement("span");
-            tag.className = type;
-            tag.appendChild(document.createTextNode(text));
-            me.appendChild(tag);
-        });
-    }
-
     function _reformatCode (codeElement) {
+
+        function _newLine () {
+            var line = document.createElement("div"),
+                parts = [].slice.call(codeElement.querySelectorAll("code > span"), 0);
+            if (0 < parts.length) {
+                parts.forEach(function (part) {
+                    line.appendChild(part);
+                });
+                line.setAttribute("class", "line");
+                codeElement.appendChild(line);
+            }
+        }
+
+        function _onTokenFound (event) {
+            var type = event.type(),
+                token = event.get("token");
+            if ("space" === type) {
+                // Trim any space token before the first non space one
+                if (!codeElement.hasChildNodes()) {
+                    return;
+                }
+                // Replace tabs with 4 spaces
+                token = gpf.replaceEx(token, {
+                    "\t": "    "
+                });
+            }
+            token.split("\n").forEach(function (text, index) {
+                var tag;
+                if (0 < index) {
+                    _newLine();
+                }
+                // Concatenate to the code element
+                tag = document.createElement("span");
+                tag.className = type;
+                tag.appendChild(document.createTextNode(text));
+                codeElement.appendChild(tag);
+            });
+        }
+
         var content = codeElement.innerHTML
                 .replace(/(&lt;)/g, "<")
                 .replace(/(&gt;)/g, ">")
                 .replace(/(&amp;)/g, "&");
         codeElement.innerHTML = ""; // Easy way to clear current content
-        gpf.js.tokenize.apply(codeElement, [content, _onTokenFound]);
-        _newLine(codeElement); // potential last line
+        gpf.js.tokenize(content, _onTokenFound);
+        _newLine(); // potential last line
     }
 
     //endregion
 
     //region ESLint integration
 
-    function findElementInLine (line, column) {
-        var pos = column,
-            current = line.firstChild;
-        while (current && current.textContent.length < pos) {
-            pos -= current.textContent.length;
-            current = current.nextSibling;
-        }
-        if (!current) {
-            current = document.createElement("span");
-            current.className = "space";
-            current.innerHTML = "&nbsp;";
-            line.appendChild(current);
-        }
-        return current;
-    }
+    function _showESLintErrors (codeElement, messages) {
 
-    function _showEslintErrors (codeElement, messages) {
+        function _findElementInLine (line, column) {
+            var pos = column,
+                current = line.firstChild;
+            while (current && current.textContent.length < pos) {
+                pos -= current.textContent.length;
+                current = current.nextSibling;
+            }
+            if (!current) {
+                current = document.createElement("span");
+                current.className = "space";
+                current.innerHTML = "&nbsp;";
+                line.appendChild(current);
+            }
+            return current;
+        }
+
+        var firstError = true;
         messages.forEach(function (message) {
             var line = codeElement.querySelectorAll("div.line")[message.line - 1],
-                current = findElementInLine(line, message.column),
+                current = _findElementInLine(line, message.column),
                 eslintData;
             line.className += " eslint-error";
             current.className += " eslint-error";
@@ -92,10 +94,14 @@
                 message: message.message
             });
             current.setAttribute("data-eslint", JSON.stringify(eslintData));
+            if (firstError) {
+                line.scrollIntoView();
+                firstError = false;
+            }
         });
     }
 
-    function _clickEslintTooltip (event) {
+    function _clickESLintTooltip (event) {
         var eslintData = event.target.getAttribute("data-eslint"),
             eslintPopup = document.getElementById("eslint"),
             clientWidth,
@@ -121,50 +127,50 @@
 
     //region Annotations
 
-    function _flagLineAsUpdated (lineElement, firstLineInRange) {
-        var anchor;
-        lineElement.className += " updated";
-        if (firstLineInRange) {
-            anchor = document.createElement("a");
-            anchor.setAttribute("name", "update");
-            lineElement.parentNode.insertBefore(anchor, lineElement);
-            window.location.hash = "update";
-        }
-    }
-
-    function _flagLineAsCollapsed (lineElement, firstLineInRange) {
-        if (firstLineInRange) {
-            lineElement.className += " expandable";
-            var expandElement = document.createElement("span");
-            expandElement.className = "expand-button";
-            expandElement.innerHTML = "...";
-            lineElement.appendChild(expandElement);
-        } else {
-            lineElement.className += " collapsed";
-        }
-    }
-
-    function _annotateLine (lineElement, annotation, firstLineInRange) {
-        if (true === annotation.updated) {
-            _flagLineAsUpdated(lineElement, firstLineInRange);
-        }
-        if (true === annotation.collapse) {
-            _flagLineAsCollapsed(lineElement, firstLineInRange);
-        }
-    }
-
     function _annotate (codeElement, annotations) {
+
+        var firstUpdateAnnotation = true;
+
+        function _flagLineAsUpdated (line) {
+            line.className += " updated";
+            if (firstUpdateAnnotation) {
+                line.scrollIntoView();
+                firstUpdateAnnotation = false;
+            }
+        }
+
+        function _flagLineAsCollapsed (line, firstLineInRange) {
+            if (firstLineInRange) {
+                line.className += " expandable";
+                var expandElement = document.createElement("span");
+                expandElement.className = "expand-button";
+                expandElement.innerHTML = "...";
+                line.appendChild(expandElement);
+            } else {
+                line.className += " collapsed";
+            }
+        }
+
+        function _annotateLine (line, annotation, firstLineInRange) {
+            if (true === annotation.updated) {
+                _flagLineAsUpdated(line, firstLineInRange);
+            }
+            if (true === annotation.collapse) {
+                _flagLineAsCollapsed(line, firstLineInRange);
+            }
+        }
+
         annotations.forEach(function (annotation) {
             var range = annotation.range,
                 lineIndex,
-                lineElement;
+                line;
             if ("number" === typeof range) {
                 range = [range, range];
             }
             for (lineIndex = range[0]; lineIndex <= range[1]; ++lineIndex) {
-                lineElement = codeElement.querySelectorAll("div.line")[lineIndex - 1];
-                if (lineElement) {
-                    _annotateLine(lineElement, annotation, lineIndex === range[0]);
+                line = codeElement.querySelectorAll("div.line")[lineIndex - 1];
+                if (line) {
+                    _annotateLine(line, annotation, lineIndex === range[0]);
                 }
             }
         });
@@ -202,41 +208,36 @@
 
     //region color scheme
 
-    var _colorSchemeKey = "preview-color-scheme",
-        _colorScheme = "white";
-
     function _setColorScheme () {
-        var link = document.getElementById("colorscheme");
+        var link = document.getElementById("colorscheme"),
+            colorScheme = localStorage.getItem("preview-color-scheme") || "white";
         if (link) {
             link.parentNode.removeChild(link);
         }
         link = document.createElement("link");
         link.id = "colorscheme";
         link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", "preview-" + _colorScheme + ".css");
+        link.setAttribute("href", "preview-" + colorScheme + ".css");
         document.head.appendChild(link);
     }
 
     document.addEventListener("keypress", function (event) {
         if (event.code === "KeyC") {
-            if ("white" === _colorScheme) {
-                _colorScheme =  "black";
+            var colorScheme = localStorage.getItem("preview-color-scheme") || "white";
+            if ("white" === colorScheme) {
+                colorScheme =  "black";
             } else {
-                _colorScheme = "white";
+                colorScheme = "white";
             }
-            localStorage.setItem(_colorSchemeKey, _colorScheme);
+            localStorage.setItem("preview-color-scheme", colorScheme);
             _setColorScheme();
         }
     });
 
     //endregion
 
-    function _onClick (event) {
-        _clickEslintTooltip(event);
-        _clickAnnotation(event);
-    }
-
     window.addEventListener("load", function () {
+        _setColorScheme();
         var fileUrl = window.location.search.substr(1),
             eslintUrl,
             preview = document.getElementById("preview");
@@ -245,10 +246,11 @@
             eslintUrl = fileUrl[1];
             fileUrl = fileUrl[0];
         }
-        document.addEventListener("click", _onClick);
+        document.addEventListener("click", function (event) {
+            _clickESLintTooltip(event);
+            _clickAnnotation(event);
+        });
         document.getElementById("filename").innerHTML = fileUrl;
-        _colorScheme = localStorage.getItem(_colorSchemeKey) || "white";
-        _setColorScheme();
         if (fileUrl) {
             xhrGet("../" + fileUrl)
                 .then(function (responseText) {
@@ -270,7 +272,7 @@
                     JSON.parse(eslintText).every(function (data) {
                         // Match the filename only
                         if (data.filePath.indexOf(fileName) === data.filePath.length - fileNameLength) {
-                            _showEslintErrors(preview, data.messages);
+                            _showESLintErrors(preview, data.messages);
                             return false;
                         }
                         return true;
