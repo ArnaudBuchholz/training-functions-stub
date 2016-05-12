@@ -49,6 +49,10 @@ div.line.updated {
     background-color: rgba(255, 255, 192, 0.2);
 }
 
+div.line.updated span.comment {
+    color: #8B929F;
+}
+
 div.line.expandable {
     background-color: #2C323C;
 }
