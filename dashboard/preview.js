@@ -234,10 +234,11 @@
         }
     });
 
+    _setColorScheme();
+
     //endregion
 
     window.addEventListener("load", function () {
-        _setColorScheme();
         var fileUrl = window.location.search.substr(1),
             eslintUrl,
             preview = document.getElementById("preview");
